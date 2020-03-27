@@ -1,0 +1,9 @@
+[submodule "RomWBW"]
+	path = RomWBW
+	url = git@github.com:vipoo/RomWBW.git
+[submodule "RC2014"]
+	path = RC2014
+	url = git@github.com:vipoo/RC2014.git
+[submodule "cpm"]
+	path = cpm
+	url = git@github.com:vipoo/cpm.git
