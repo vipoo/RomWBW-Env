@@ -1,6 +1,17 @@
 # RomWBW-Env
 Container for developing and testing changes within RomWBW
 
+## Prerequisites
+
+### uz80as
+
+this assembler needs to installed into your system
+
+```
+cd uz80as
+make
+sudo make install
+```
 
 ## Tools
 
@@ -13,4 +24,5 @@ example: `./romwbw-build-cmd shared` will run the BuildShared.cmd script
 * `./run-rcz80-dino`
 
 Invokes the RC2014 emulator for the binary rom image RomWBW/Binary/RCZ80_dino.rom
+
 

@@ -7,3 +7,6 @@
 [submodule "cpm"]
 	path = cpm
 	url = git@github.com:vipoo/cpm.git
+[submodule "uz80as"]
+	path = uz80as
+	url = git@github.com:vipoo/uz80as.git
