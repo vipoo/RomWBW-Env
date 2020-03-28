@@ -1,0 +1,6 @@
+#!/bin/bash
+
+X=$(grep -c "$2" /tmp/rcoutput.txt)
+if [ "$X" != "$1" ]; then
+  exit 1
+fi

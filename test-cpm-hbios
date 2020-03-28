@@ -4,6 +4,7 @@ APP_DIR=./apps/hbios/
 TEST_RUNNER_DIR=./tests/
 SCRIPT_TO_RUN=$1
 TAIL=${2}
+
 sudo rm /tmp/output.txt
 
 SCREEN_PID=$(sudo screen -ls | grep cpmhbiosrunner | cut -d. -f1 | awk '{print $1}')
@@ -16,6 +17,7 @@ cd ${APP_DIR}
 echo "${SCRIPT_TO_RUN}:"
 CMD=$(cat ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
 sudo screen -d -m -L -Logfile /tmp/output.txt -S "cpmhbiosrunner" ../../cpm/cpm ${CMD}
+sudo screen -r cpmhbiosrunner -p0 -X logfile flush 0
 
 if [ "$TAIL" != "no-tail" ]; then
   tail -F -n50 /tmp/output.txt &

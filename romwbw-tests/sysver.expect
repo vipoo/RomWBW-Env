@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -ex
+
+./expect 1 "DE: 0x2920; HL 0x0007"

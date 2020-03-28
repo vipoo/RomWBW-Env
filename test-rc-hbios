@@ -1,0 +1,55 @@
+#!/bin/bash
+
+APP_DIR=./
+TEST_RUNNER_DIR=./romwbw-tests/
+SCRIPT_TO_RUN=$1
+TAIL=${2}
+
+sudo rm /tmp/rcoutput.txt
+
+SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
+if [ "$SCREEN_PID" != "" ]; then
+  sudo kill $SCREEN_PID
+fi
+
+echo "${SCRIPT_TO_RUN}:"
+sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 -b -s -r ${WINHOME}/personal/retro/RomWBW/Binary/RCZ80_dino.rom
+sudo screen -r romwbwtestrunner -p0 -X logfile flush 0
+
+if [ "$TAIL" != "no-tail" ]; then
+  tail -F -n50 /tmp/rcoutput.txt &
+  tailpid=$!
+
+  function cleanup()
+  {
+    kill $tailpid
+  }
+
+  trap cleanup EXIT
+fi
+
+( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "CP/M-80 v2.2, 54.0K TPA"
+
+CMD=$(cat ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
+for (( i=0; i<${#CMD}; i += 2)); do
+  ch="${CMD:$i:2}"
+  sudo screen -S romwbwtestrunner -p 0 -X stuff "$ch"
+done
+
+sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
+
+( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "Returned registers"
+
+
+SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
+sudo kill $SCREEN_PID
+
+cd ${TEST_RUNNER_DIR}
+if ./${SCRIPT_TO_RUN}.expect /tmp/rcoutput.txt; then
+  echo "PASSED"
+else
+  echo "FAILED"
+  exit 1
+fi
+
+

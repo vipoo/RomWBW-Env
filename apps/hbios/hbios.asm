@@ -17,7 +17,7 @@ bdos	.equ	$0005		; BDOS invocation vector
 	LD	(stksav), sp		; save stack
 	LD	sp, stack		; set new stack
 
-	PRTS(	"HBIOS Test Utility v0.1\r\n$")
+	PRTS(	"HBIOS Test Utility v0.3\r\n$")
 
 	CALL	parse			; parse command line
 
