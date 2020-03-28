@@ -4,6 +4,7 @@ APP_DIR=./apps/hbios/
 TEST_RUNNER_DIR=./tests/
 SCRIPT_TO_RUN=$1
 TAIL=${2}
+MOCK_FILE=${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.mock
 
 sudo rm /tmp/output.txt
 
@@ -16,6 +17,13 @@ cd ${APP_DIR}
 
 echo "${SCRIPT_TO_RUN}:"
 CMD=$(cat ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
+
+if test -f "$MOCK_FILE"; then
+  CMD="--hbios-mocks $MOCK_FILE $CMD"
+  echo $CMD
+fi
+
+
 sudo screen -d -m -L -Logfile /tmp/output.txt -S "cpmhbiosrunner" ../../cpm/cpm ${CMD}
 sudo screen -r cpmhbiosrunner -p0 -X logfile flush 0
 

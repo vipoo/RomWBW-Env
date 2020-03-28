@@ -7,5 +7,5 @@ set -ex
 # Invokes the HBIOS SYSVER call
 ./expect 1 "HBIOS: BF_SYSVER"
 
-./expect 1 "DE: 0xDDEE"
-./expect 1 "HL: 0x0007"
+./expect 1 "DE: 0x1122"
+./expect 1 "HL: 0x3344"
