@@ -30,7 +30,7 @@ fi
 
 ( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "CP/M-80 v2.2, 54.0K TPA"
 
-CMD=$(cat ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
+CMD=$(grep -v '^#' ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
 for (( i=0; i<${#CMD}; i += 2)); do
   ch="${CMD:$i:2}"
   sudo screen -S romwbwtestrunner -p 0 -X stuff "$ch"
@@ -43,6 +43,10 @@ sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
 
 SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
 sudo kill $SCREEN_PID
+
+if [ "$TAIL" != "no-tail" ]; then
+  echo -e "\n\n"
+fi
 
 cd ${TEST_RUNNER_DIR}
 if ./${SCRIPT_TO_RUN}.expect /tmp/rcoutput.txt; then

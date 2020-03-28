@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -ex
+
+./expect 1 "SN7_PITCH_SET CH: 05, PITCH: 0087"
+./expect 1 "OUT SN76489, AD"
+./expect 1 "OUT SN76489, 3F"
+
