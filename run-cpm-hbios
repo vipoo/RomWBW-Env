@@ -1,7 +1,9 @@
 #!/bin/bash +x
 
+set -e
+
 cd ./apps/hbios
-make
+make --trace
 
  ../../cpm/cpm hbios $@
 

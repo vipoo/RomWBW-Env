@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -ex
+
+# Invokes the HBIOS SYSVER call
+./expect 1 "HBIOS: BF_SYSVER"

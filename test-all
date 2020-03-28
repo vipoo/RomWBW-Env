@@ -1,0 +1,12 @@
+#!/bin/bash +x
+
+set -e
+
+make apps -s
+
+for i in ./apps/hbios/tests/*.test; do
+  filename=$(basename $i)
+  filename="${filename%.*}"
+  ./test-cpm-hbios "$filename" "no-tail"
+done
+

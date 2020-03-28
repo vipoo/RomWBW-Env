@@ -1,0 +1,50 @@
+#!/bin/bash
+
+APP_DIR=./apps/hbios/
+TEST_RUNNER_DIR=./tests/
+SCRIPT_TO_RUN=$1
+TAIL=${2}
+sudo rm /tmp/output.txt
+
+SCREEN_PID=$(sudo screen -ls | grep cpmhbiosrunner | cut -d. -f1 | awk '{print $1}')
+if [ "$SCREEN_PID" != "" ]; then
+  sudo kill $SCREEN_PID
+fi
+
+cd ${APP_DIR}
+
+echo "${SCRIPT_TO_RUN}:"
+CMD=$(cat ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
+sudo screen -d -m -L -Logfile /tmp/output.txt -S "cpmhbiosrunner" ../../cpm/cpm ${CMD}
+
+if [ "$TAIL" != "no-tail" ]; then
+  tail -F -n50 /tmp/output.txt &
+  tailpid=$!
+
+  function cleanup() {
+    kill $tailpid
+  }
+
+  trap cleanup EXIT
+fi
+
+sudo screen -S cpmhbiosrunner -p 0 -X stuff "bye^M"
+
+SCREEN_PID=$(sudo screen -ls | grep cpmhbiosrunner | cut -d. -f1 | awk '{print $1}')
+if [ "$SCREEN_PID" != "" ]; then
+  sudo kill $SCREEN_PID
+
+  echo
+  echo "Session failed to exit"
+  exit 1
+else
+  cd ${TEST_RUNNER_DIR}
+  if ./${SCRIPT_TO_RUN}.expect /tmp/output.txt; then
+    echo "PASSED"
+  else
+    echo "FAILED"
+    exit 1
+  fi
+fi
+
+

@@ -3,7 +3,7 @@ UZ80AS=uz80as -x
 ASSEMBLER=$(UZ80AS)
 
 %.com: %.asm
-	$(ASSEMBLER) $< $@ ;
+	@$(ASSEMBLER) $< $@ ;
 
 .PHONY: all
 
