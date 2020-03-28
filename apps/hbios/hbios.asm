@@ -20,7 +20,6 @@ bdos	.equ	$0005		; BDOS invocation vector
 	PRTS(	"HBIOS Test Utility v0.1\r\n$")
 
 	CALL	parse			; parse command line
-	JR	nz, exit
 
 	PRTS(	"B: 0x$")		; print out register values supplied on ccp
 	LD	bc, (bcValue)
@@ -77,7 +76,6 @@ fromchar:				; value is returned in B
 
 numchar:
 	LD	b, a
-	XOR	a			; return success
 	RET
 ;===============================================================================
 
@@ -86,7 +84,6 @@ readhexbyte:				; Read 2 chars - and convert to a byte - returned in A
 	OR	a
 	JP	z, errprm
 	CALL	fromchar
-	RET	nz
 	LD	a, b
 	RLCA
 	RLCA
@@ -99,13 +96,11 @@ readhexbyte:				; Read 2 chars - and convert to a byte - returned in A
 	OR	a
 	JP	z, errprm
 	CALL	fromchar
-	RET	nz
 	LD	a, b
 	INC	hl
 
 	OR	c
 	LD	c, a
-	XOR	a
 	RET
 
 ;===============================================================================
@@ -119,7 +114,6 @@ parse:
 	JP	z, erruse		; no parms
 
 	CALL	readhexbyte		; read value for register B
-	RET	NZ
 	LD	a, c
 	LD	(bcValue + 1), a
 
@@ -130,7 +124,6 @@ parse:
 	LD	a, c
 	LD	(bcValue), a
 
-	XOR	a			; return success
 	RET
 
 ;===============================================================================
@@ -235,8 +228,8 @@ errprm:					; command parameter error (syntax)
 err:					; print error string and return error signal
 	CALL	crlf			; print newline
 	CALL	prtstrz			; print error string
-	OR	$FF			; signal error
-	RET				; done
+	JP	exit
+
 
 ;===============================================================================
 ; PRINT A STRING DIRECT: REFERENCED BY POINTER AT TOP OF STACK
