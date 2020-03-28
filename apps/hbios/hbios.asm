@@ -111,14 +111,12 @@ readhexbyte:				; Read 2 chars - and convert to a byte - returned in A
 parse:
 	LD	hl,$81			; point to start of command tail (after length byte)
 	CALL	nonblank		; skip blanks
-	JP	z, erruse		; no parms
 
 	CALL	readhexbyte		; read value for register B
 	LD	a, c
 	LD	(bcValue + 1), a
 
 	CALL	nonblank		; skip blanks
-	JP	z, erruse		; no parms
 
 	CALL	readhexbyte		; read value for register C
 	LD	a, c
@@ -206,14 +204,20 @@ crlf:
 ; Get the next non-blank character from (HL).
 
 nonblank:
-	LD	a,(hl)			; load next character
+	LD	a, (hl)			; load next character
+	OR	a
+	JP	z, erruse
+	cp	' '			; string ends with a null
+	JR	nz, errprm		; if no blank found as expected, return error to user
+
+skipblank:
+	INC	hl			; if blank, increment character pointer
+	LD	a, (hl)			; load next character
 	OR	a			; string ends with a null
 	RET	z			; if null, return pointing to null
 	CP	' '			; check for blank
 	RET	nz			; return if not blank
-	INC	hl			; if blank, increment character pointer
-	JR	nonblank		; and loop
-
+	JR	skipblank		; and loop
 
 ;===============================================================================
 ; Errors
