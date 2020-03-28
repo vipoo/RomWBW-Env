@@ -21,14 +21,20 @@ bdos	.equ	$0005		; BDOS invocation vector
 
 	CALL	parse			; parse command line
 
-	PRTS(	"B: 0x$")		; print out register values supplied on ccp
-	LD	bc, (bcValue)
-	LD	a, b
-	CALL	prthex
-	PRTS(	"\r\nC: 0x$")
-	LD	a, c
-	CALL	prthex
-	CALL	crlf
+	LD	iy, bcValue
+	LD	B, 'B'
+	LD	C, 'C'
+	CALL 	prtregs
+
+	LD	iy, deValue
+	LD	B, 'D'
+	LD	C, 'E'
+	CALL	prtregs
+
+	LD	iy, hlValue
+	LD	B, 'H'
+	LD	C, 'L'
+	CALL	prtregs
 
 	CALL	invokehbios
 
@@ -45,6 +51,21 @@ exit:
 	LD	sp, (stksav)		; restore stack
 	RET				; return to CP/M
 
+prtregs:                               ; iy is location of data to print
+	LD	a, b
+	call	prtchr
+	PRTS(	": 0x$")
+	LD	a, (iy+1)                 ; b is chr of 1st register
+	call	prthex
+	CALL	crlf
+	LD	a, c
+	call	prtchr
+	PRTS(	": 0x$")
+	LD	a, (iy)                 ; b is chr of 1st register
+	call	prthex
+	call	crlf
+	RET
+
 ;===============================================================================
 
 prtreg:					; print 16 bit value at IY
@@ -57,6 +78,8 @@ prtreg:					; print 16 bit value at IY
 
 invokehbios:
 	LD	bc, (bcValue)
+	LD	de, (deValue)
+	LD	hl, (hlValue)
 	RST	08
 	LD	(deResult), de
 	LD	(hlResult), hl
@@ -105,23 +128,42 @@ readhexbyte:				; Read 2 chars - and convert to a byte - returned in A
 
 ;===============================================================================
 ; Parse command line
-; If success, Z set and HL points to device name string (zero terminated)
-; ... else NZ set.
+; if parse error, writes error string and then jp to exit
 
 parse:
-	LD	hl,$81			; point to start of command tail (after length byte)
+	LD	hl, $81			; point to start of command tail (after length byte)
+
+	LD	IY, bcValue
+	CALL	parsehexbyte
+
+	LD	a, (hl)			; if no more args
+	OR	a
+	RET	z
+
+	LD	IY, deValue		; D and E values
+	CALL	parsehexbyte
+
+	LD	a, (hl)			; if no more args
+	OR	a
+	RET	z
+
+	LD	IY, hlValue		; H and L values
+	CALL	parsehexbyte
+
+	RET
+
+parsehexbyte:
 	CALL	nonblank		; skip blanks
 
 	CALL	readhexbyte		; read value for register B
 	LD	a, c
-	LD	(bcValue + 1), a
+	LD	(IY + 1), a
 
 	CALL	nonblank		; skip blanks
 
 	CALL	readhexbyte		; read value for register C
 	LD	a, c
-	LD	(bcValue), a
-
+	LD	(IY), a
 	RET
 
 ;===============================================================================
@@ -260,13 +302,15 @@ stack		.equ	$		; stack top
 ;===============================================================================
 ; Messages
 
-msguse		.db	"Usage: HBIOS BB CC$"
+msguse		.db	"Usage: HBIOS BB CC [DD EE] [HH LL]$"
 msgprm		.db	"Parameter error$"
 
 
 ;===============================================================================
 ; Register values to supply to hbios
 bcValue		.dw	0
+deValue		.dw	0
+hlValue		.dw	0
 
 ;===============================================================================
 ; Captured register returned by hbios call

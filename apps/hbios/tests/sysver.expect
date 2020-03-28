@@ -2,5 +2,7 @@
 
 set -ex
 
+./expect 1 "B: 0xF1"
+./expect 1 "C: 0x00"
 # Invokes the HBIOS SYSVER call
 ./expect 1 "HBIOS: BF_SYSVER"
