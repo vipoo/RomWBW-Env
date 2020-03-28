@@ -38,11 +38,12 @@ bdos	.equ	$0005		; BDOS invocation vector
 
 	CALL	invokehbios
 
-	PRTS(	"Returned registers\r\nDE: 0x$")
+	PRTS(	"Returned registers\r\n$")
+	PRTS(	"Ret DE: 0x$")
 	LD	IY, deResult
 	CALL	prtreg
 
-	PRTS(	"\r\nHL: 0x$")
+	PRTS(	"\r\nRet HL: 0x$")
 	LD	IY, hlResult
 	CALL	prtreg
 

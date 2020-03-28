@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -ex
+
+./expect 1 "SN7_VOLUME_SET CH: 01, VOL: 00"
+./expect 1 "OUT SN76489, BF"
+
+

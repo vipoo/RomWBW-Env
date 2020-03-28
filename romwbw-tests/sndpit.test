@@ -1,4 +1,4 @@
 
 hbios 52 00 01 FF A5 55
 
-# B C D E H L
+#BF_SNDPIT, Driver (C) 00, Channel (D) 01, (E) ignored 00, pitch (HL) A555

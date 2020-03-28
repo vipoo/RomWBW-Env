@@ -13,7 +13,7 @@ if [ "$SCREEN_PID" != "" ]; then
 fi
 
 echo "${SCRIPT_TO_RUN}:"
-sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 -b -s -r ${WINHOME}/personal/retro/RomWBW/Binary/RCZ80_dino.rom
+sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 -b -s -r ./RomWBW/Binary/RCZ80_dino.rom
 sudo screen -r romwbwtestrunner -p0 -X logfile flush 0
 
 if [ "$TAIL" != "no-tail" ]; then
