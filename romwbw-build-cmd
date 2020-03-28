@@ -1,0 +1,5 @@
+#!/bin/bash +x
+
+cd ./RomWBW/Source
+
+/mnt/c/Windows/system32/cmd.exe /C "Build${1}.cmd ${@:2}"

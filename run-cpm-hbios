@@ -1,0 +1,7 @@
+#!/bin/bash +x
+
+cd ./apps/hbios
+make
+
+ ../../cpm/cpm hbios $@
+
