@@ -25,7 +25,7 @@ cpm:
 	$(MAKE) --directory cpm
 
 rc2014:
-	$(MAKE) --directory RC2014
+	$(MAKE) --directory RC2014 -j 8
 
 uz80as:
 	$(MAKE) --directory uz80as

@@ -4,6 +4,7 @@ APP_DIR=./
 TEST_RUNNER_DIR=./romwbw-tests/
 SCRIPT_TO_RUN=$1
 TAIL=${2}
+MOCK_FILE=${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.mock
 
 sudo rm /tmp/rcoutput.txt
 
@@ -12,8 +13,15 @@ if [ "$SCREEN_PID" != "" ]; then
   sudo kill $SCREEN_PID
 fi
 
+ARGS="-b -s -r ./RomWBW/Binary/RCZ80_dino.rom"
+if test -f "$MOCK_FILE"; then
+  ARGS="-t $MOCK_FILE $ARGS"
+fi
+
+echo $ARGS
+
 echo "${SCRIPT_TO_RUN}:"
-sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 -b -s -r ./RomWBW/Binary/RCZ80_dino.rom
+sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 $ARGS
 sudo screen -r romwbwtestrunner -p0 -X logfile flush 0
 
 if [ "$TAIL" != "no-tail" ]; then
