@@ -19,7 +19,8 @@ tools: cpm rc2014 uz80as
 apps/hbios:
 	$(MAKE) --directory apps/hbios
 
-apps: apps/hbios
+apps:
+	$(MAKE) --directory apps
 
 cpm:
 	$(MAKE) --directory cpm
