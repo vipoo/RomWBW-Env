@@ -2,5 +2,5 @@
 
 set -ex
 
-./expect 1 "Ret DE: 0x2920"
+./expect 1 "Ret DE: 0x3000"
 ./expect 1 "Ret HL: 0x0007"

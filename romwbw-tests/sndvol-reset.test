@@ -1,4 +1,6 @@
 
 hbios 51 00 01 00
+hbios 53 00
 
 #BF_SNDVOL, Driver 00, Channel 01, Volume E 00
+#BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00

@@ -58,8 +58,15 @@ fi
 
 cd ${TEST_RUNNER_DIR}
 if ./${SCRIPT_TO_RUN}.expect /tmp/rcoutput.txt; then
-  echo "PASSED"
+
+  if ./expect 0 ">>> PANIC"; then
+    echo "PASSED"
+  else
+    echo "FAILED - DUE TO PANIC"
+  fi
 else
+
+
   echo "FAILED"
   exit 1
 fi

@@ -3,4 +3,5 @@
 set -ex
 
 #SN7_VOLUME_SET CH: 01, VOL: FF
-./expect 1 "OUT SN76489, B0"
+./expect 1 "PORT OUT: FC, B0"
+./expect 1 "PORT OUT: F8, B0"
