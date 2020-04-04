@@ -2,4 +2,7 @@
 
 set -ex
 
-./expect 2 "Ret HL: 0x1234"
+#duration assign and return
+./expect 3 "Ret HL: 0x1234"
+#target time
+./expect 1 "Ret DE:HL: 0x10001234"

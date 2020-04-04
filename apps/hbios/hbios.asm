@@ -56,6 +56,12 @@ bdos	.equ	$0005		; BDOS invocation vector
 	LD	IY, hlResult
 	CALL	prtreg
 
+	PRTS(	"\r\nRet DE:HL: 0x$")
+	LD	IY, deResult
+	CALL	prtreg
+	LD	IY, hlResult
+	CALL	prtreg
+
 exit:
 	CALL	crlf			; formatting
 	LD	sp, (stksav)		; restore stack

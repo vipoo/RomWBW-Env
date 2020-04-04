@@ -1,5 +1,10 @@
+hbios F9 D0 10 00 00 00
 hbios 55 00 00 00 12 34
-hbios 54 00 00 05
 
+hbios 54 00 00 05
+hbios 54 00 00 06
+
+#set time 1000 0000
 # set channel duration to $1234
 # query channel duration value
+# query channel time stop value
