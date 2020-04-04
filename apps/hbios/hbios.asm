@@ -39,7 +39,16 @@ bdos	.equ	$0005		; BDOS invocation vector
 	CALL	invokehbios
 
 	PRTS(	"Returned registers\r\n$")
-	PRTS(	"Ret DE: 0x$")
+
+	PRTS(	"Ret AF: 0x$")
+	LD	IY, afResult
+	CALL	prtreg
+
+	PRTS(	"\r\nRet BC: 0x$")
+	LD	IY, bcResult
+	CALL	prtreg
+
+	PRTS(	"\r\nRet DE: 0x$")
 	LD	IY, deResult
 	CALL	prtreg
 
@@ -52,11 +61,11 @@ exit:
 	LD	sp, (stksav)		; restore stack
 	RET				; return to CP/M
 
-prtregs:                               ; iy is location of data to print
+prtregs:				; iy is location of data to print
 	LD	a, b
 	call	prtchr
 	PRTS(	": 0x$")
-	LD	a, (iy+1)                 ; b is chr of 1st register
+	LD	a, (iy+1)		; b is chr of 1st register
 	call	prthex
 	CALL	crlf
 	LD	a, c
@@ -82,8 +91,12 @@ invokehbios:
 	LD	de, (deValue)
 	LD	hl, (hlValue)
 	RST	08
+	LD	(bcResult), bc
 	LD	(deResult), de
 	LD	(hlResult), hl
+	PUSH	AF
+	POP	BC
+	LD	(afResult), BC
 	RET
 
 ;===============================================================================
@@ -316,6 +329,8 @@ hlValue		.dw	0
 ;===============================================================================
 ; Captured register returned by hbios call
 
+afResult	.dw	0
+bcResult	.dw	0
 deResult	.dw	0
 hlResult	.dw	0
 
