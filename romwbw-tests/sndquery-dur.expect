@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -ex
+
+./expect 2 "Ret HL: 0x1234"

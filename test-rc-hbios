@@ -45,8 +45,11 @@ for (( i=0; i<${#CMD}; i += 2)); do
 done
 
 sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
+sudo screen -S romwbwtestrunner -p 0 -X stuff ";D"
+sudo screen -S romwbwtestrunner -p 0 -X stuff "ON"
+sudo screen -S romwbwtestrunner -p 0 -X stuff "E^M"
 
-( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "Returned registers"
+( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "DONE"
 
 
 SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
