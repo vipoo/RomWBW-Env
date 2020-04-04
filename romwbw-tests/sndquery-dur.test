@@ -1,5 +1,5 @@
 hbios 55 00 00 00 12 34
-hbios 54 00 00 06
+hbios 54 00 00 05
 
 # set channel duration to $1234
 # query channel duration value
