@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -ex
+
+./expect 2 "Ret DE: 0x1234"
