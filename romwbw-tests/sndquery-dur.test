@@ -1,8 +1,8 @@
-; set time 1000 0000
-hbios F9 D0 10 00 00 00
-
 ; set duration 1234
 hbios 55 00 00 00 12 34
+
+; play
+hbios 53 00
 
 ; tick int
 hbios F9 D2
