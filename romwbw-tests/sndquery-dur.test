@@ -1,10 +1,14 @@
+; set time 1000 0000
 hbios F9 D0 10 00 00 00
+
+; set duration 1234
 hbios 55 00 00 00 12 34
 
-hbios 54 00 00 05
-hbios 54 00 00 06
+; tick int
+hbios F9 D2
 
-#set time 1000 0000
-# set channel duration to $1234
-# query channel duration value
-# query channel time stop value
+; query dur
+hbios 54 00 00 05
+
+; query dur current count
+hbios 54 00 00 06
