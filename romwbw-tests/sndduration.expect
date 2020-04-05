@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-#VOLUME_SET CH: 01, VOL: 00
-#The reason we expect 2 - one for driver initialisation and 1 for the silence due to duration period
-
-./expect 2 "PORT OUT: FC, BF"
-./expect 2 "PORT OUT: F8, BF"

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+NEXT_WAIT_TIME=0
+until [ $(grep -c "$2" /tmp/rcoutput.txt) == "$1" ] || [ $NEXT_WAIT_TIME -eq 4 ]; do
+  (( NEXT_WAIT_TIME++ ))
+  sleep 0.25
+done
+
 X=$(grep -c "$2" /tmp/rcoutput.txt)
 if [ "$X" != "$1" ]; then
   exit 1

@@ -18,14 +18,12 @@ if test -f "$MOCK_FILE"; then
   ARGS="-t $MOCK_FILE $ARGS"
 fi
 
-echo $ARGS
-
 echo "${SCRIPT_TO_RUN}:"
 sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 $ARGS
 sudo screen -r romwbwtestrunner -p0 -X logfile flush 0
 
 if [ "$TAIL" != "no-tail" ]; then
-  tail -F -n50 /tmp/rcoutput.txt &
+  tail -q -F -n50 /tmp/rcoutput.txt 2> /dev/null &
   tailpid=$!
 
   function cleanup()
@@ -36,13 +34,60 @@ if [ "$TAIL" != "no-tail" ]; then
   trap cleanup EXIT
 fi
 
+
 ( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "CP/M-80 v2.2, 54.0K TPA"
 
 CMD=$(grep -v '^#' ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
-for (( i=0; i<${#CMD}; i += 2)); do
-  ch="${CMD:$i:2}"
-  sudo screen -S romwbwtestrunner -p 0 -X stuff "$ch"
-done
+
+cd ${TEST_RUNNER_DIR}
+
+while IFS= read -r line; do
+if [ "$TAIL" == "no-tail" ]; then
+  printf "."
+fi
+
+if [[ ${line:0:1} == ";" ]] ; then
+  if [ "$TAIL" != "no-tail" ]; then
+    echo
+    echo -e "\e[33m${line}\e[0m"
+  fi
+else
+
+if [[ ${line:0:1} == "." ]] ; then
+
+  if [ "${line}" == "./clear" ]; then
+    sudo truncate -s 0 /tmp/rcoutput.txt
+  else
+    if [ "$TAIL" != "no-tail" ]; then
+      echo
+      echo -e "\e[33m${line}\e[0m"
+    fi
+
+    if ! eval "$line"; then
+      echo
+      echo -e "\e[31m${line}"
+      echo -e "FAILED\e[0m"
+      exit 1
+    fi
+  fi
+
+else
+
+  for (( i=0; i<${#line}; i += 2)); do
+    ch="${line:$i:2}"
+    sudo screen -S romwbwtestrunner -p 0 -X stuff "$ch"
+  done
+
+  sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
+
+fi
+fi
+
+done <<< "$CMD"
+
+if [ "$TAIL" == "no-tail" ]; then
+  echo
+fi
 
 sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
 sudo screen -S romwbwtestrunner -p 0 -X stuff ";D"
@@ -59,19 +104,19 @@ if [ "$TAIL" != "no-tail" ]; then
   echo -e "\n\n"
 fi
 
-cd ${TEST_RUNNER_DIR}
-if ./${SCRIPT_TO_RUN}.expect /tmp/rcoutput.txt; then
+if [[ -f "./${SCRIPT_TO_RUN}.expect" ]]; then
+  if ./${SCRIPT_TO_RUN}.expect /tmp/rcoutput.txt; then
 
-  if ./expect 0 ">>> PANIC"; then
-    echo "PASSED"
+    if ./expect 0 ">>> PANIC"; then
+      echo "PASSED"
+    else
+      echo "FAILED - DUE TO PANIC"
+    fi
   else
-    echo "FAILED - DUE TO PANIC"
+
+    echo "FAILED"
+    exit 1
   fi
 else
-
-
-  echo "FAILED"
-  exit 1
+  echo "PASSED"
 fi
-
-
