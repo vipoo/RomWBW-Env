@@ -1,10 +1,27 @@
 
+; set vol 80
 hbios 51 00 01 00 00 80
+
+; qry vol
+hbios 54 00 01 04
+
+; set pit a555
 hbios 52 00 01 FF A5 55
-hbios 53 00
+
+; qry pitch
+hbios 54 00 01 03
+
+; set duration 100
+hbios 55 00 01 00 03 00
+
+; query dur
+hbios 54 00 01 05
+
+; qry pending
+hbios 54 00 01 00
+
+; play
 hbios 53 00
 
-#BF_SNDVOL, Driver 00, Channel 01, E (ignored), H (ignored) L Volume 80
-#BF_SNDPIT, Driver (C) 00, Channel (D) 01, (E) ignored 00, pitch (HL) A555
-#BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
-#BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00 - should only send command once.
+; play - no-op
+hbios 53 00
