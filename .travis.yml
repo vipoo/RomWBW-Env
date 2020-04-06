@@ -1,0 +1,27 @@
+os: linux
+dist: bionic
+language: c
+
+compiler:
+  - gcc
+
+git:
+  submodules: false
+  depth: 3
+
+before_install:
+  - sudo apt-get update && sudo apt-get -y install texi2html texinfo help2man
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+
+install:
+  - cd uz80as && ./bootstrap && ./configure
+  - cd .. && make tools
+  - cd uz80as && sudo make install
+  - cd ..
+
+script:
+  - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
+  - sudo ls
+  - ./test-cpm-hbios-all
+  - ./test-rc-hbios
