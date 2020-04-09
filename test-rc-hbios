@@ -73,12 +73,14 @@ if [[ ${line:0:1} == "." ]] ; then
 
 else
 
-  for (( i=0; i<${#line}; i += 2)); do
-    ch="${line:$i:2}"
-    sudo screen -S romwbwtestrunner -p 0 -X stuff "$ch"
-  done
-
+  sudo screen -S romwbwtestrunner -p 0 -X stuff "$line"
   sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
+
+  NEXT_WAIT_TIME=0
+  until tail -n 1 /tmp/rcoutput.txt | grep -q "$line" || [ $NEXT_WAIT_TIME -eq 4 ]; do
+    (( NEXT_WAIT_TIME++ ))
+    sleep 0.25
+  done
 
 fi
 fi
@@ -89,13 +91,9 @@ if [ "$TAIL" == "no-tail" ]; then
   echo
 fi
 
-sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
-sudo screen -S romwbwtestrunner -p 0 -X stuff ";D"
-sudo screen -S romwbwtestrunner -p 0 -X stuff "ON"
-sudo screen -S romwbwtestrunner -p 0 -X stuff "E^M"
+sudo screen -S romwbwtestrunner -p 0 -X stuff "^M;DONE^M"
 
 ( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "DONE"
-
 
 SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
 sudo kill $SCREEN_PID
