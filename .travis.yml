@@ -29,9 +29,9 @@ install:
 before_script:
   - export PATH=`pwd`/rc2014/bin:$PATH
   - export PATH=`pwd`/cpm/bin:$PATH
+  - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
 
 script:
-  - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
   - ./test-cpm-hbios-all
   - ./test-rc-hbios-all
 
