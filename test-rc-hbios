@@ -19,7 +19,7 @@ if test -f "$MOCK_FILE"; then
 fi
 
 echo "${SCRIPT_TO_RUN}:"
-sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" ./RC2014/rc2014 $ARGS
+sudo screen -d -m -L -Logfile /tmp/rcoutput.txt -S "romwbwtestrunner" $(which rc2014) $ARGS
 sudo screen -r romwbwtestrunner -p0 -X logfile flush 0
 
 if [ "$TAIL" != "no-tail" ]; then
