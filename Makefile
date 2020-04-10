@@ -2,7 +2,6 @@
 .PHONY: all
 .PHONY: rc2014
 .PHONY: romwbw-rcz80-dino
-.PHONY: cpm
 .PHONY: tools
 .PHONY: apps
 .PHONY: apps/hbios
@@ -29,16 +28,13 @@ romwbw:
 rcz80-rom-dino:
 	@./romwbw-build-cmd rom RCZ80 dino
 
-tools: cpm rc2014 uz80as
+tools: rc2014 uz80as
 
 apps/hbios:
 	$(MAKE) --directory apps/hbios
 
 apps:
 	$(MAKE) --directory apps
-
-cpm:
-	$(MAKE) --directory cpm
 
 rc2014:
 	$(MAKE) --directory RC2014

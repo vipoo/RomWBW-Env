@@ -24,7 +24,7 @@ if test -f "$MOCK_FILE"; then
 fi
 
 
-sudo screen -d -m -L -Logfile /tmp/output.txt -S "cpmhbiosrunner" ../../cpm/cpm ${CMD}
+sudo screen -d -m -L -Logfile /tmp/output.txt -S "cpmhbiosrunner" $(which cpm) ${CMD}
 sudo screen -r cpmhbiosrunner -p0 -X logfile flush 0
 
 if [ "$TAIL" != "no-tail" ]; then
