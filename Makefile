@@ -4,7 +4,6 @@
 .PHONY: tools
 .PHONY: apps
 .PHONY: apps/hbios
-.PHONY: uz80as
 .PHONY: rcz80-rom-dino
 .PHONY: romwbw
 
@@ -27,16 +26,11 @@ romwbw:
 rcz80-rom-dino:
 	@./romwbw-build-cmd rom RCZ80 dino
 
-tools: uz80as
-
 apps/hbios:
 	$(MAKE) --directory apps/hbios
 
 apps:
 	$(MAKE) --directory apps
-
-uz80as:
-	$(MAKE) --directory uz80as
 
 romwbw-rcz80-dino:
 	@./romwbw-build-cmd "" RCZ80 dino

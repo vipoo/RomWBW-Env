@@ -18,7 +18,7 @@ You need to pull the git submodules:
 
 Requires a specific fork of cpm for testing the code.
 
-The fork can be found at: (cpm fork)[https://github.com/vipoo/cpm]
+The fork can be found at: [cpm fork](https://github.com/vipoo/cpm)
 
 You can download the precompiled binaries - or build them yourself:
 
@@ -26,19 +26,17 @@ You can download the precompiled binaries - or build them yourself:
 
 Requires a specific fork of rc2014 for testing the code.
 
-The fork can be found at: (RC2014 fork)[https://github.com/vipoo/RC2014]
+The fork can be found at: [RC2014 fork](https://github.com/vipoo/RC2014)
 
 You can download the precompiled binaries - or build them yourself:
 
 ### uz80as
 
-this assembler needs to installed into your system
+Requires a specific fork of rc2014 for building the HBIOS test utility
 
-```
-cd uz80as
-make
-sudo make install
-```
+The fork can be dound at [uz80as fork](https://github.com/vipoo/uz80as)
+
+You can download the precompiled binaries - or build them yourself:
 
 ## Tools
 

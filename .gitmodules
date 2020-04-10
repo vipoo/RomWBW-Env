@@ -1,6 +1,3 @@
 [submodule "RomWBW"]
 	path = RomWBW
 	url = git@github.com:vipoo/RomWBW.git
-[submodule "uz80as"]
-	path = uz80as
-	url = git@github.com:vipoo/uz80as.git
