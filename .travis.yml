@@ -26,30 +26,36 @@ install:
   - cd uz80as && sudo make install
   - cd ..
 
-before_script:
-  - export PATH=`pwd`/rc2014/bin:$PATH
-  - export PATH=`pwd`/cpm/bin:$PATH
-  - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
-
-script:
-  - ./test-cpm-hbios-all
-  - ./test-rc-hbios-all
-
-before_deploy:
-  - cd RomWBW/Binary
-  - tar -czvf romwbw-roms-${TRAVIS_TAG}.tar.gz *.rom
-  - tar -czvf romwbw-coms-${TRAVIS_TAG}.tar.gz *.com
-
-deploy:
-  provider: releases
-  file:
-    - romwbw-roms-${TRAVIS_TAG}.tar.gz
-    - romwbw-coms-${TRAVIS_TAG}.tar.gz
-  skip_cleanup: true
-  on:
-    tags: true
-  api-key:
-    secure: "nX7KML7Na1J9cDG7JzU2uoBt00ftX6WsZjKpzJYgidXEOJe8EwuAfeMFbyZrFV2gFY63swXjwz9wngSWyKm6GN1PAxKXapvpXRckbEgceIlv5cmkZXQxo/EjmSGeXmGFt5zQMuFhjLwwd9kMTvd7yDUqhUX+llT/oIMLkMDFDjNsZ90APItvkCDfMopnW9NQNrJqqgaGwF8aR/ZZ6BSf4PpJvKNTi9CUY6ekEZJYf3nl8JvHM2crqxdhq8f8tvGQNMve0CrrfjvboSAQ4USIU8+lXekrb1ThmKW9L+DG3vCMichaYVw4UwOueYJddDDmo50bY0k40L19Vsw5i/XjbYEbocryViDhEgeVnikaqk/eir/uMo8d9f7asCvuqIZT7HIJ19rz/GVcv7T42U4gIjxmW/gURDjsurSlUlvf9NRlptfYhJx55Si4JNhogdOCsOS7uB9ZlNYn28rb+5F4u53v3mNR3ojUjkKFRPWKoRpM4d1gbCDtT8a2e/4cjZMv/HM8leAHWfGDD/qSO1OLzvWo3IqG9HVjfhp88VRac3j1SpKff3ltb8vmF4PwrCcDEAjrj3T3ADrg4PbBojOAGpQHgGadAP2wqXUEb/gi8em1IcjrmgyWSqAxPbJCW0wTRCngQ21fvplZ59Eb/dp9Bz6Xa1ooNPLC5lhwzJz2GWE="
+jobs:
+  include:
+    - stage: Dino Build Only
+      before_script:
+        - export PATH=`pwd`/rc2014/bin:$PATH
+        - export PATH=`pwd`/cpm/bin:$PATH
+        - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
+      script:
+        - ./test-cpm-hbios-all
+        - ./test-rc-hbios-all
+    - stage: All Rom Images
+      before_script:
+        - export PATH=`pwd`/rc2014/bin:$PATH
+        - export PATH=`pwd`/cpm/bin:$PATH
+      script:
+        - make all
+      before_deploy:
+        - cd RomWBW/Binary
+        - tar -czvf romwbw-roms-${TRAVIS_TAG}.tar.gz *.rom
+        - tar -czvf romwbw-coms-${TRAVIS_TAG}.tar.gz *.com
+      deploy:
+        provider: releases
+        file:
+          - romwbw-roms-${TRAVIS_TAG}.tar.gz
+          - romwbw-coms-${TRAVIS_TAG}.tar.gz
+        skip_cleanup: true
+        on:
+          tags: true
+        api-key:
+          secure: "nX7KML7Na1J9cDG7JzU2uoBt00ftX6WsZjKpzJYgidXEOJe8EwuAfeMFbyZrFV2gFY63swXjwz9wngSWyKm6GN1PAxKXapvpXRckbEgceIlv5cmkZXQxo/EjmSGeXmGFt5zQMuFhjLwwd9kMTvd7yDUqhUX+llT/oIMLkMDFDjNsZ90APItvkCDfMopnW9NQNrJqqgaGwF8aR/ZZ6BSf4PpJvKNTi9CUY6ekEZJYf3nl8JvHM2crqxdhq8f8tvGQNMve0CrrfjvboSAQ4USIU8+lXekrb1ThmKW9L+DG3vCMichaYVw4UwOueYJddDDmo50bY0k40L19Vsw5i/XjbYEbocryViDhEgeVnikaqk/eir/uMo8d9f7asCvuqIZT7HIJ19rz/GVcv7T42U4gIjxmW/gURDjsurSlUlvf9NRlptfYhJx55Si4JNhogdOCsOS7uB9ZlNYn28rb+5F4u53v3mNR3ojUjkKFRPWKoRpM4d1gbCDtT8a2e/4cjZMv/HM8leAHWfGDD/qSO1OLzvWo3IqG9HVjfhp88VRac3j1SpKff3ltb8vmF4PwrCcDEAjrj3T3ADrg4PbBojOAGpQHgGadAP2wqXUEb/gi8em1IcjrmgyWSqAxPbJCW0wTRCngQ21fvplZ59Eb/dp9Bz6Xa1ooNPLC5lhwzJz2GWE="
 
 notifications:
   email: false
