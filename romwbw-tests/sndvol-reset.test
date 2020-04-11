@@ -1,6 +1,15 @@
+./expect 1 "PORT OUT: FC, BF"
+./expect 1 "PORT OUT: F8, BF"
+./clear
+
+hbios 55 00 01 00 00 01
+; set channel 01
 
 hbios 51 00 01 00 00 00
-hbios 53 00
+; BF_SNDVOL, Driver 00, Channel 01, E (ignored), H (ignored) L Volume 00
 
-#BF_SNDVOL, Driver 00, Channel 01, E (ignored), H (ignored) L Volume 00
-#BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
+hbios 53 00
+; BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
+
+./expect 1 "PORT OUT: FC, BF"
+./expect 1 "PORT OUT: F8, BF"

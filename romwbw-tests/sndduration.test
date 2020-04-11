@@ -1,14 +1,15 @@
 ./expect 1 "PORT OUT: FC, 9F"
 ./clear
 
+hbios 55 00 01 00 00 01
+; set duration 0001
+
 hbios 51 00 01 00 00 80
 ; set vol 80
 
 hbios 52 00 01 FF A5 55
 ; set pitch A555
 
-hbios 55 00 01 00 00 01
-; set duration 0001
 
 hbios 53 00
 ; play
