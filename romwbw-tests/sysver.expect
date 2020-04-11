@@ -1,6 +1,21 @@
 #!/bin/bash
 
-set -ex
+set -e
 
-./expect 1 "Ret DE: 0x3000"
+if [ "$TRAVIS_TAG" == "" ]; then
+  EXPECTED_VERSION=0x3010
+else
+  semver=( ${TRAVIS_TAG//./ } )
+  major="${semver[0]}"
+  minor="${semver[1]}"
+  patch="${semver[2]}"
+
+  patch_upper=$((${semver[2]} / 256))
+  patch_lower=$((${semver[2]} % 256))
+
+  EXPECTED_VERSION=$(printf "0x%x%x%x%x" $major $minor $patch_upper $patch_lower)
+fi
+
+set -x
+./expect 1 "Ret DE: ${EXPECTED_VERSION}"
 ./expect 1 "Ret HL: 0x0007"
