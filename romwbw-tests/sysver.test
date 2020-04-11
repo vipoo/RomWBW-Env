@@ -1,4 +1,1 @@
 hbios F1 00
-
-./expect 1 "Ret DE: 0x3010"
-./expect 1 "Ret HL: 0x0007"
