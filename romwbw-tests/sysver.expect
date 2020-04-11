@@ -5,7 +5,8 @@ set -e
 if [ "$TRAVIS_TAG" == "" ]; then
   EXPECTED_VERSION=0x3010
 else
-  semver=( ${TRAVIS_TAG//./ } )
+  version_number=${TRAVIS_TAG:1}
+  semver=( ${version_number//./ } )
   major="${semver[0]}"
   minor="${semver[1]}"
   patch="${semver[2]}"
