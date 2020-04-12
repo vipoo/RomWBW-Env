@@ -1,11 +1,8 @@
 
-hbios 55 00 01 00 00 01
-; set channel 01
+hbios 51 00 00 00 00 FF
+; BF_SNDVOL, Driver 00, D (ignored), E (ignored), H (ignored) L Volume FF
 
-hbios 51 00 01 00 00 FF
-; BF_SNDVOL, Driver 00, Channel 01, E (ignored), H (ignored) L Volume FF
-
-hbios 53 00
+hbios 53 00 01 00
 ; BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
 
 

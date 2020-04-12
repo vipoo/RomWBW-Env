@@ -1,10 +1,18 @@
 ; get tick
 hbios F8 D0
+
 ; set tick 1234 5678
 hbios F9 D0 12 34 56 78
+./clear
+
 ; get tick
 hbios F8 D0
+./expect 1 "Ret DE:HL: 0x12345678"
+
 ; tick int
 hbios F9 D2
+./clear
+
 ; get tick
 hbios F8 D0
+./expect 1 "Ret DE:HL: 0x12345679"

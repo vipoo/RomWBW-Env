@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-./expect 1 "Ret BC: 0x0301"

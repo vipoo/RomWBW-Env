@@ -1,11 +1,8 @@
 
-hbios 55 00 01 00 00 01
-; set channel 01
-
 hbios 52 00 00 FF A5 55
-; BF_SNDPIT, Driver (C) 00, Channel (D) 01, (E) ignored 00, pitch (HL) A555
+; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) A555
 
-hbios 53 00
+hbios 53 00 01 00
 ; BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
 
 

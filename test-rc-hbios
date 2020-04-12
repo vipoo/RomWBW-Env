@@ -6,6 +6,8 @@ SCRIPT_TO_RUN=$1
 TAIL=${2}
 MOCK_FILE=${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.mock
 
+MARKER=1
+
 sudo rm -f /tmp/rcoutput.txt
 
 SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
@@ -34,7 +36,6 @@ if [ "$TAIL" != "no-tail" ]; then
   trap cleanup EXIT
 fi
 
-
 ( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "CP/M-80 v2.2, 54.0K TPA"
 
 CMD=$(grep -v '^#' ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)
@@ -56,6 +57,11 @@ else
 if [[ ${line:0:1} == "." ]] ; then
 
   if [ "${line}" == "./clear" ]; then
+    if ! ./expect 0 "BAD INT"; then
+      echo -e "\e[31mBAD INT DETECTED\e[0m"
+      exit 1
+    fi
+    set +x
     sudo truncate -s 0 /tmp/rcoutput.txt
   else
     if [ "$TAIL" != "no-tail" ]; then
@@ -76,10 +82,13 @@ else
   sudo screen -S romwbwtestrunner -p 0 -X stuff "$line"
   sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
 
+  (( MARKER++ ))
+  sudo screen -S romwbwtestrunner -p 0 -X stuff ";MK $MARKER^M"
+
   NEXT_WAIT_TIME=0
-  until tail -n 1 /tmp/rcoutput.txt | grep -q "$line" || [ $NEXT_WAIT_TIME -eq 4 ]; do
+  until tail -n 2 /tmp/rcoutput.txt | grep -q ";MK $MARKER" || [ $NEXT_WAIT_TIME -eq 20 ]; do
     (( NEXT_WAIT_TIME++ ))
-    sleep 0.25
+    sleep 0.1
   done
 
 fi
@@ -116,5 +125,6 @@ if [[ -f "./${SCRIPT_TO_RUN}.expect" ]]; then
     exit 1
   fi
 else
+  ./expect 0 "BAD INT"
   echo "PASSED"
 fi

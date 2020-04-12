@@ -38,8 +38,6 @@ bdos	.equ	$0005		; BDOS invocation vector
 
 	CALL	invokehbios
 
-	PRTS(	"Returned registers\r\n$")
-
 	PRTS(	"Ret AF: 0x$")
 	LD	IY, afResult
 	CALL	prtreg
@@ -62,6 +60,7 @@ bdos	.equ	$0005		; BDOS invocation vector
 	LD	IY, hlResult
 	CALL	prtreg
 
+	PRTS(	"\r\nReturned registers\r\n$")
 exit:
 	CALL	crlf			; formatting
 	LD	sp, (stksav)		; restore stack
