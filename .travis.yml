@@ -18,9 +18,9 @@ install:
   - wget https://github.com/vipoo/cpm/releases/download/v0.0.2/cpm-v0.0.2.tar.gz
   - mkdir -p cpm
   - tar -xzvf cpm-v0.0.2.tar.gz -C ./cpm
-  - wget https://github.com/vipoo/RC2014/releases/download/v0.0.1/rc2014-v0.0.1.tar.gz
+  - wget https://github.com/vipoo/RC2014/releases/download/v0.0.2/rc2014-v0.0.2.tar.gz
   - mkdir -p rc2014
-  - tar -xzvf rc2014-v0.0.1.tar.gz -C ./rc2014
+  - tar -xzvf rc2014-v0.0.2.tar.gz -C ./rc2014
   - wget https://github.com/vipoo/uz80as/releases/download/v1.10.2/uz80as-v1.10.2.tar.gz
   - mkdir -p uz80as
   - tar -xzvf uz80as-v1.10.2.tar.gz -C ./uz80as

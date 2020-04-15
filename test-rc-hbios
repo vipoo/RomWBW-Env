@@ -15,7 +15,7 @@ if [ "$SCREEN_PID" != "" ]; then
   sudo kill $SCREEN_PID
 fi
 
-ARGS="-b -s -r ./RomWBW/Binary/RCZ80_dino.rom"
+ARGS="-b -s -f -r ./RomWBW/Binary/RCZ80_dino.rom"
 if test -f "$MOCK_FILE"; then
   ARGS="-t $MOCK_FILE $ARGS"
 fi
