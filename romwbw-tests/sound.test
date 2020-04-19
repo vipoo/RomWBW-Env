@@ -5,8 +5,9 @@ hbios 51 00 00 00 00 80
 ./clear
 
 ; qry vol
-hbios 54 00 00 02
+hbios 55 00 00 02
 ./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x0080"
 ./clear
 
 ; set pit a555
@@ -15,12 +16,13 @@ hbios 52 00 00 FF 15 55
 ./clear
 
 ; qry pitch
-hbios 54 00 00 03
+hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x1555"
 ./clear
 
 ; play
-hbios 53 00 01 00
+hbios 54 00 01 00
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "PORT OUT: FC, B7"
 ./expect 1 "PORT OUT: F8, B7"

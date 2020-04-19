@@ -1,0 +1,75 @@
+
+; BF_SNDPIT, Driver (C) 00, (D) ignored, (E) ignored 00, note (HL) 00 01
+hbios 53 00 00 FF 00 00
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x03DC"
+./clear
+
+
+hbios 53 00 00 FF 00 04
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x03A4"
+./clear
+
+
+hbios 53 00 00 FF 00 2C
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x020B"
+./clear
+
+
+hbios 53 00 00 FF 00 4C
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x0149"
+./clear
+
+
+hbios 53 00 00 FF 00 6C
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x00CF"
+./clear
+
+
+hbios 53 00 00 FF 00 7C
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x00A4"
+./clear
+
+
+hbios 53 00 00 FF 00 F7
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 00 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x001B"
+./clear
+
+;/OVERFLOW
+hbios 53 00 00 FF 00 F9
+./expect 1 "Ret AF: 0xFF"
+./clear

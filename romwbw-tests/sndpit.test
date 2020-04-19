@@ -5,7 +5,7 @@ hbios 52 00 00 FF A1 55
 ./clear
 
 ; BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
-hbios 53 00 01 00
+hbios 54 00 01 00
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "PORT OUT: FC, A5"
 ./expect 1 "PORT OUT: FC, 15"
