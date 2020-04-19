@@ -6,7 +6,7 @@ hbios 59 00 00 00 00 80
 ./clear
 
 ; qry vol
-hbios 5C 00 02 00
+hbios 5C 00 01 00
 ./expect 1 "HL: 0x0080"
 
 ; set pit a555
@@ -14,7 +14,7 @@ hbios 5A 00 00 FF 15 55
 ./clear
 
 ; qry pitch
-hbios 5C 00 01 00
+hbios 5C 00 02 00
 ./expect 1 "HL: 0x1555"
 
 hbios 5D 00 00 00 00 01
@@ -51,6 +51,3 @@ hbios F9 D2
 ; expect vol to be 0
 ./clear
 
-; play - no-op
-hbios 53 00 01 00
-./expect 0 "PORT OUT: FC"

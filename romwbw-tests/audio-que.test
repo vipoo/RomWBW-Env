@@ -49,8 +49,13 @@ hbios F9 D2
 ; expect vol to be 0
 ./clear
 
+
 ; play - no-op
-hbios 53 00 01 00
+hbios 5B 00 01 00
+./clear
+
+; play - no-op
+hbios 5B 00 01 00
 ./expect 0 "PORT OUT: FC"
 
 HBIOS 5F 00

@@ -5,7 +5,7 @@ hbios 51 00 00 00 00 80
 ./clear
 
 ; qry vol
-hbios 54 00 00 04
+hbios 54 00 00 02
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -26,8 +26,3 @@ hbios 53 00 01 00
 ./expect 1 "PORT OUT: F8, B7"
 ./expect 1 "PORT OUT: FC, A5"
 ./expect 1 "PORT OUT: FC, 15"
-./clear
-
-; play - no-op
-hbios 53 00 01 00
-./expect 0 "PORT OUT: FC"
