@@ -1,13 +1,13 @@
 
-hbios 52 00 00 FF A5 55
 ; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) A555
+hbios 52 00 00 FF A1 55
+./expect 1 "Ret AF: 0x00"
+./clear
 
-hbios 53 00 01 00
 ; BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
-
-
-./expect 1 "PORT OUT: FC, AA"
-./expect 1 "PORT OUT: FC, 16"
-
-./expect 1 "PORT OUT: F8, AA"
-./expect 1 "PORT OUT: F8, 16"
+hbios 53 00 01 00
+./expect 1 "Ret AF: 0x00"
+./expect 1 "PORT OUT: FC, A5"
+./expect 1 "PORT OUT: FC, 15"
+./expect 1 "PORT OUT: F8, A5"
+./expect 1 "PORT OUT: F8, 15"
