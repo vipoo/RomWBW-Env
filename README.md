@@ -1,6 +1,8 @@
 # RomWBW-Env
 
-> [![Build Status](https://travis-ci.org/vipoo/RomWBW-Env.svg?branch=master)](https://travis-ci.org/vipoo/RomWBW-Env)
+> MASTER: [![Build Status](https://travis-ci.org/vipoo/RomWBW-Env.svg?branch=master)](https://travis-ci.org/vipoo/RomWBW-Env)
+
+> DEV: [![Build Status](https://travis-ci.org/vipoo/RomWBW-Env.svg?branch=dev)](https://travis-ci.org/vipoo/RomWBW-Env)
 
 Container for developing and testing changes within RomWBW
 
@@ -32,7 +34,7 @@ You can download the precompiled binaries - or build them yourself:
 
 ### uz80as
 
-Requires a specific fork of rc2014 for building the HBIOS test utility
+Requires a specific fork of uz80as for building the HBIOS test utility
 
 The fork can be dound at [uz80as fork](https://github.com/vipoo/uz80as)
 

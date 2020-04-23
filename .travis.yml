@@ -31,6 +31,7 @@ jobs:
         - export PATH=`pwd`/rc2014/bin:$PATH
         - export PATH=`pwd`/cpm/bin:$PATH
         - export PATH=`pwd`/uz80as/bin:$PATH
+        - ./version-stamp.sh
         - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
       script:
         - ./test-cpm-hbios-all
@@ -41,6 +42,7 @@ jobs:
         - export PATH=`pwd`/cpm/bin:$PATH
         - export PATH=`pwd`/uz80as/bin:$PATH
       script:
+        - ./version-stamp.sh
         - make all
       before_deploy:
         - cd RomWBW/Binary
