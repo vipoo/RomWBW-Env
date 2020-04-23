@@ -1,0 +1,53 @@
+./expect 1 "PORT OUT: FC, 9F"
+./clear
+
+; set vol 80
+hbios 59 00 00 00 00 80
+./clear
+
+; qry vol
+hbios 5C 00 01 00
+./expect 1 "HL: 0x0080"
+
+; set pit a555
+hbios 5A 00 00 FF 15 55
+./clear
+
+; qry pitch
+hbios 5C 00 02 00
+./expect 1 "HL: 0x1555"
+
+hbios 5D 00 00 00 00 01
+; set duration 0001
+./clear
+
+; qry duration
+hbios 5C 00 03 00
+./expect 1 "HL: 0x0001"
+./clear
+
+; qry target
+hbios 5C 00 04 00
+./expect 1 "HL: 0x0001"
+./clear
+
+; qry flags
+hbios 5C 00 00 00
+./expect 1 "HL: 0x0001"
+
+; play
+hbios 5B 00 01 00
+./expect 1 "PORT OUT: FC, B7"
+./expect 1 "PORT OUT: F8, B7"
+./expect 1 "PORT OUT: FC, A5"
+./expect 1 "PORT OUT: FC, 15"
+./clear
+
+hbios F9 D2
+; inc time
+
+./expect 1 "PORT OUT: FC, BF"
+./expect 1 "PORT OUT: F8, BF"
+; expect vol to be 0
+./clear
+
