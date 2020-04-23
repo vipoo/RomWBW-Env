@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
+cp ./RCZ80_dino.asm ./RomWBW/Source/HBIOS/Config
+patch -suN -p1 -d ./RomWBW < systimerinc.patch

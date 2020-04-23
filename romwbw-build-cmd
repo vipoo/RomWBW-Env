@@ -1,11 +1,9 @@
 #!/bin/bash
 
-cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
-cp ./RCZ80_dino.asm ./RomWBW/Source/HBIOS/Config
+./romwbw-build-prep
 
 function cleanup() {
-  rm ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
-  rm ./RomWBW/Source/HBIOS/Config/RCZ80_dino.asm
+  ./romwbw-build-cleanup
 }
 
 trap cleanup EXIT
