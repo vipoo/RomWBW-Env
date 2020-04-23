@@ -17,8 +17,10 @@ export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
 .PHONY: romwbw
 romwbw:
 	cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
+	cp ./RCZ80_dino.asm ./RomWBW/Source/HBIOS/Config
 	function cleanup {
 		rm ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
+		rm ./RomWBW/Source/HBIOS/Config/RCZ80_dino.asm
 	}
 	trap cleanup EXIT
 	$(MAKE) --directory RomWBW

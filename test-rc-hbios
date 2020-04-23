@@ -36,6 +36,11 @@ if [ "$TAIL" != "no-tail" ]; then
   trap cleanup EXIT
 fi
 
+
+( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "RC2014 Boot Loader"
+
+sudo screen -S romwbwtestrunner -p 0 -X stuff "C^M"
+
 ( tail -F -n50 /tmp/rcoutput.txt  & ) | grep -q "CP/M-80 v2.2, 54.0K TPA"
 
 CMD=$(grep -v '^#' ${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.test)

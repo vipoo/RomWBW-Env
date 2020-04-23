@@ -2,20 +2,7 @@
 
 set -e
 
-if [ "$TRAVIS_TAG" == "" ]; then
-  EXPECTED_VERSION=0x3010
-else
-  version_number=${TRAVIS_TAG:1}
-  semver=( ${version_number//./ } )
-  major="${semver[0]}"
-  minor="${semver[1]}"
-  patch="${semver[2]}"
-
-  patch_upper=$((${semver[2]} / 256))
-  patch_lower=$((${semver[2]} % 256))
-
-  EXPECTED_VERSION=$(printf "0x%x%x%x%x" $major $minor $patch_upper $patch_lower)
-fi
+EXPECTED_VERSION=0x3100
 
 set -x
 ./expect 1 "Ret DE: ${EXPECTED_VERSION}"
