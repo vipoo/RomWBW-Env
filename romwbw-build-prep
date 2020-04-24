@@ -3,3 +3,4 @@
 cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
 cp ./RCZ80_dino.asm ./RomWBW/Source/HBIOS/Config
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < systimerinc.patch
+patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < auddump.patch

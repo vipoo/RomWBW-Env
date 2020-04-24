@@ -5,11 +5,11 @@ hbios 59 00 00 00 00 80
 ; set pit a555
 hbios 5A 00 00 FF 15 55
 
-hbios 5D 00 00 00 00 01
+hbios 5E 00 00 00 00 01
 ; set duration 0001
 
 ; play first
-hbios 5B 00 01 00
+hbios 5C 00 01 00
 ./expect 1 "PORT OUT: FC, B7"
 ./expect 1 "PORT OUT: F8, B7"
 ./expect 1 "PORT OUT: FC, A5"
@@ -23,12 +23,12 @@ hbios 59 00 00 00 00 20
 ; set pit 1555
 hbios 5A 00 00 FF 15 56
 
-hbios 5D 00 00 00 00 01
+hbios 5E 00 00 00 00 01
 ; set duration 0001
 
 ./clear
 ; play queue
-hbios 5B 00 01 00
+hbios 5C 00 01 00
 ./expect 1 "Returned registers"
 ./expect 0 "PORT OUT: FC"
 
@@ -68,11 +68,11 @@ HBIOS 5F 00
 
 
 ; play - no-op
-hbios 5B 00 01 00
+hbios 5C 00 01 00
 ./clear
 
 ; play - no-op
-hbios 5B 00 01 00
+hbios 5C 00 01 00
 ./expect 0 "PORT OUT: FC"
 
 HBIOS 5F 00

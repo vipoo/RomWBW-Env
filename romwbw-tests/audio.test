@@ -6,7 +6,7 @@ hbios 59 00 00 00 00 80
 ./clear
 
 ; qry vol
-hbios 5C 00 01 00
+hbios 5D 00 01 00
 ./expect 1 "HL: 0x0080"
 
 ; set pit a555
@@ -14,29 +14,29 @@ hbios 5A 00 00 FF 15 55
 ./clear
 
 ; qry pitch
-hbios 5C 00 02 00
+hbios 5D 00 02 00
 ./expect 1 "HL: 0x1555"
 
-hbios 5D 00 00 00 00 01
+hbios 5E 00 00 00 00 01
 ; set duration 0001
 ./clear
 
 ; qry duration
-hbios 5C 00 03 00
+hbios 5D 00 03 00
 ./expect 1 "HL: 0x0001"
 ./clear
 
 ; qry target
-hbios 5C 00 04 00
+hbios 5D 00 04 00
 ./expect 1 "HL: 0x0001"
 ./clear
 
 ; qry flags
-hbios 5C 00 00 00
+hbios 5D 00 00 00
 ./expect 1 "HL: 0x0001"
 
 ; play
-hbios 5B 00 01 00
+hbios 5C 00 01 00
 ./expect 1 "PORT OUT: FC, B7"
 ./expect 1 "PORT OUT: F8, B7"
 ./expect 1 "PORT OUT: FC, A5"
