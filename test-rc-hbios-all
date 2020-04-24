@@ -7,6 +7,12 @@ make apps -s
 for i in ./romwbw-tests/*.test; do
   filename=$(basename $i)
   filename="${filename%.*}"
+
+  # Disable audio function tests
+  if [[ "$filename" =~ ^audio* ]]; then
+    continue
+  fi;
+
   if ! ./test-rc-hbios "$filename" "no-tail"; then
     FAILED=1
   fi
