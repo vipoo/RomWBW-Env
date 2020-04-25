@@ -7,15 +7,19 @@
 .PHONY: rcz80-rom-dino
 .PHONY: romwbw
 
-all: romwbw
+all: apps/hbios Tools Tune.com romwbw
 
 export SHELL:=/bin/bash
 export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
 
 .ONESHELL:
 
+.PHONY: Tools
+Tools:
+	$(MAKE) --directory RomWBW/Tools/unix
+
 .PHONY: romwbw
-romwbw: apps/hbios Tune.com
+romwbw:
 	./romwbw-build-prep
 	function cleanup() {
 		./romwbw-build-cleanup
