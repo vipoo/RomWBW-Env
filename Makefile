@@ -23,7 +23,7 @@ romwbw:
 	trap cleanup EXIT
 	$(MAKE) --directory RomWBW
 
-rcz80-rom-dino:
+rcz80-rom-dino: Tune.com
 	@./romwbw-build-cmd rom RCZ80 dino
 
 apps/hbios:
@@ -32,5 +32,9 @@ apps/hbios:
 apps:
 	$(MAKE) --directory apps
 
-romwbw-rcz80-dino:
+.PHONY: Tune.com
+Tune.com:
+	$(MAKE) --directory RomWBW/Source/Apps/Tune
+
+romwbw-rcz80-dino: Tune.com
 	@./romwbw-build-cmd "" RCZ80 dino

@@ -1,6 +1,13 @@
 #!/bin/bash
 
+mkdir -p ./store
+
 cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
+cp ./RomWBW/Source/Apps/Tune/Tune.com ./RomWBW/Source/RomDsk/ROM_512KB/Tune.com
+cp ./RomWBW/Source/Apps/Tune/Tunes/Backup.pt3 ./RomWBW/Source/RomDsk/ROM_512KB/backup.pt3
+cp ./RomWBW/Source/Apps/Tune/Tunes/Demo3.mym ./RomWBW/Source/RomDsk/ROM_512KB/Demo3.mym
+mv ./RomWBW/Source/RomDsk/ROM_512KB/MBASIC.COM ./store/
+
 cp ./RCZ80_dino.asm ./RomWBW/Source/HBIOS/Config
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < systimerinc.patch
 #patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < auddump.patch

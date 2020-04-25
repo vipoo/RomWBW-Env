@@ -1,0 +1,19 @@
+tune
+#./expect 1 "Hardware error, sound chip not detected!"
+./clear
+
+tune     --hbios
+./expect 1 "Usage: TUNE <filename>.\[PT2|PT3|MYM\] \[--hbios\]"
+./clear
+
+tune blah --hbios
+./expect 1 "Sound file not found!"
+./clear
+
+tune demo3.mym --hbios
+./expect 1 "MYM FILES NOT SUPPORTED YET"
+./clear
+
+tune backup --hbios
+./expect 2 "PORT OUT: FC, 9F"
+./expect 5 "PORT OUT: F8, 80"
