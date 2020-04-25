@@ -78,6 +78,12 @@ if [[ ${line:0:1} == "." ]] ; then
       echo
       echo -e "\e[31m${line}"
       echo -e "FAILED\e[0m"
+      echo
+      echo "-------------------------------------------"
+      cat /tmp/rcoutput.txt
+      echo
+      echo "-------------------------------------------"
+
       exit 1
     fi
   fi
