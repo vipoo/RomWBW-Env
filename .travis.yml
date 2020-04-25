@@ -43,7 +43,7 @@ jobs:
         - export PATH=`pwd`/uz80as/bin:$PATH
       script:
         - ./version-stamp.sh
-        - make all
+        - make romwbw
       before_deploy:
         - cd RomWBW/Binary
         - tar -czvf romwbw-roms-${TRAVIS_TAG}.tar.gz *.rom

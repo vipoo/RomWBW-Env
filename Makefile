@@ -7,7 +7,7 @@
 .PHONY: rcz80-rom-dino
 .PHONY: romwbw
 
-all: apps/hbios Tools Tune.com romwbw
+all: apps/hbios Tools Tune.com rcz80-dino-romwbw
 
 export SHELL:=/bin/bash
 export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
@@ -18,14 +18,21 @@ export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
 Tools:
 	$(MAKE) --directory RomWBW/Tools/unix
 
+# Build the standard romwbw images
 .PHONY: romwbw
 romwbw:
+	$(MAKE) --directory RomWBW
+
+# Patch and build a custom dino image for use with testing
+.PHONY: rcz80-dino-romwbw
+rcz80-dino-romwbw:
 	./romwbw-build-prep
 	function cleanup() {
 		./romwbw-build-cleanup
 	}
 	trap cleanup EXIT
 	$(MAKE) --directory RomWBW
+
 
 rcz80-rom-dino: Tune.com
 	@./romwbw-build-cmd rom RCZ80 dino
