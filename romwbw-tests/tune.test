@@ -1,5 +1,5 @@
 tune
-#./expect 1 "Hardware error, sound chip not detected!"
+./expect 1 "Hardware error, sound chip not detected!"
 ./clear
 
 tune     --hbios
@@ -14,6 +14,7 @@ tune demo3.mym --hbios
 ./expect 1 "MYM FILES NOT SUPPORTED YET"
 ./clear
 
+./exit-next
 tune backup --hbios
-./expect 2 "PORT OUT: FC, 9F"
-./expect 5 "PORT OUT: F8, 80"
+./expect gt 2 "PORT OUT: FC, 9F"
+./expect gt 5 "PORT OUT: F8, 80"

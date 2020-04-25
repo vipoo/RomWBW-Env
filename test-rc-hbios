@@ -8,6 +8,15 @@ MOCK_FILE=${TEST_RUNNER_DIR}${SCRIPT_TO_RUN}.mock
 
 MARKER=1
 
+
+if [ "$CI" == "true" ]; then
+  TIMERCOUNT=80
+  TIMEPAUSE=1
+else
+  TIMERCOUNT=20
+  TIMEPAUSE=0.1
+fi
+
 sudo rm -f /tmp/rcoutput.txt
 
 SCREEN_PID=$(sudo screen -ls | grep romwbwtestrunner | cut -d. -f1 | awk '{print $1}')
@@ -61,30 +70,35 @@ else
 
 if [[ ${line:0:1} == "." ]] ; then
 
-  if [ "${line}" == "./clear" ]; then
-    if ! ./expect 0 "BAD INT"; then
-      echo -e "\e[31mBAD INT DETECTED\e[0m"
-      exit 1
-    fi
-    set +x
-    sudo truncate -s 0 /tmp/rcoutput.txt
+  if [ "${line}" == "./exit-next" ]; then
+    EXIT_NEXT=1
   else
-    if [ "$TAIL" != "no-tail" ]; then
-      echo
-      echo -e "\e[33m${line}\e[0m"
-    fi
 
-    if ! eval "$line"; then
-      echo
-      echo -e "\e[31m${line}"
-      echo -e "FAILED\e[0m"
-      echo
-      echo "-------------------------------------------"
-      cat /tmp/rcoutput.txt
-      echo
-      echo "-------------------------------------------"
+    if [ "${line}" == "./clear" ]; then
+      if ! ./expect 0 "BAD INT"; then
+        echo -e "\e[31mBAD INT DETECTED\e[0m"
+        exit 1
+      fi
+      set +x
+      sudo truncate -s 0 /tmp/rcoutput.txt
+    else
+      if [ "$TAIL" != "no-tail" ]; then
+        echo
+        echo -e "\e[33m${line}\e[0m"
+      fi
 
-      exit 1
+      if ! eval "$line"; then
+        echo
+        echo -e "\e[31m${line}"
+        echo -e "FAILED\e[0m"
+        echo
+        echo "-------------------------------------------"
+        cat /tmp/rcoutput.txt
+        echo
+        echo "-------------------------------------------"
+
+        exit 1
+      fi
     fi
   fi
 
@@ -93,13 +107,19 @@ else
   sudo screen -S romwbwtestrunner -p 0 -X stuff "$line"
   sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
 
+  if [ "$EXIT_NEXT" != "" ]; then
+    sleep $EXIT_NEXT
+    unset EXIT_NEXT
+    sudo screen -S romwbwtestrunner -p 0 -X stuff "^C"
+  fi
+
   (( MARKER++ ))
   sudo screen -S romwbwtestrunner -p 0 -X stuff ";MK $MARKER^M"
 
   NEXT_WAIT_TIME=0
-  until tail -n 2 /tmp/rcoutput.txt | grep -q ";MK $MARKER" || [ $NEXT_WAIT_TIME -eq 20 ]; do
+  until tail -n 2 /tmp/rcoutput.txt | grep -q ";MK $MARKER" || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
     (( NEXT_WAIT_TIME++ ))
-    sleep 0.1
+    sleep $TIMEPAUSE
   done
 
 fi
