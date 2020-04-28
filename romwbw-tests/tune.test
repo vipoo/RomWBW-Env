@@ -16,5 +16,9 @@ tune demo3.mym --hbios
 
 ./exit-next
 tune backup --hbios
-./expect gt 2 "PORT OUT: FC, 9F"
-./expect gt 5 "PORT OUT: F8, 80"
+./expect gt 2 "PORT OUT: FC, 00"
+./expect gt 2 "PORT OUT: F8, 00"
+./expect gt 2 "PORT OUT: FC, BF"
+./expect gt 2 "PORT OUT: F8, BF"
+./expect gt 2 "PORT OUT: FC, A0"
+./expect gt 2 "PORT OUT: F8, A0"
