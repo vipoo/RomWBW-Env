@@ -1,0 +1,11 @@
+; query channel count
+hbios 55 00 00 01
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret BC: 0x0301"
+./clear
+
+; query device
+hbios 55 00 00 04
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret DE: 0x00FC"
+./expect 1 "Ret HL: 0x00F8"
