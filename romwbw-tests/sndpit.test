@@ -1,6 +1,6 @@
 
-; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) A555
-hbios 52 00 00 FF A1 55
+; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) 0055
+hbios 52 00 00 FF 00 55
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -8,6 +8,27 @@ hbios 52 00 00 FF A1 55
 hbios 54 00 01 00
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "PORT OUT: FC, A5"
-./expect 1 "PORT OUT: FC, 15"
+./expect 1 "PORT OUT: FC, 05"
 ./expect 1 "PORT OUT: F8, A5"
-./expect 1 "PORT OUT: F8, 15"
+./expect 1 "PORT OUT: F8, 05"
+./clear
+
+; Max pitch is ok
+; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) 03FF
+hbios 52 00 00 FF 03 FF
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; Overflow pitch returns error
+; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) 4000
+hbios 52 00 00 FF 40 00
+./expect 1 "Ret AF: 0xFF"
+./clear
+
+
+; Overflow pitch returns error
+; BF_SNDPIT, Driver (C) 00, Channel (D) ignored, (E) ignored 00, pitch (HL) FFFF
+hbios 52 00 00 FF FF FF
+./expect 1 "Ret AF: 0xFF"
+./clear
+
