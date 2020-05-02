@@ -32,7 +32,7 @@ jobs:
         - export PATH=`pwd`/cpm/bin:$PATH
         - export PATH=`pwd`/uz80as/bin:$PATH
         - ./version-stamp.sh
-        - ROM_PLATFORM=RCZ80 ROM_CONFIG=dino make all
+        - ROM_PLATFORM=RCZ80 ROM_CONFIG=test make test-build
       script:
         - ./test-cpm-hbios-all
         - ./test-rc-hbios-all

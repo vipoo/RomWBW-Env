@@ -1,5 +1,6 @@
 
 .PHONY: all
+.PHONY: test-build
 .PHONY: romwbw-rcz80-dino
 .PHONY: romwbw-rcz80-test
 .PHONY: tools
@@ -9,7 +10,9 @@
 .PHONY: rcz80-rom-test
 .PHONY: romwbw
 
-all: apps/hbios Tools Tune.com rcz80-dino-romwbw rcz80-test-romwbw
+all: apps/hbios Tools Tune.com rcz80-dino-romwbw
+
+test-build: apps/hbios Tools Tune.com rcz80-test-romwbw
 
 export SHELL:=/bin/bash
 export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
