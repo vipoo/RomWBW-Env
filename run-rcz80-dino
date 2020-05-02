@@ -1,3 +1,0 @@
-#!/bin/bash +x
-
- ./RC2014/rc2014 -b -s -r ./RomWBW/Binary/RCZ80_dino.rom

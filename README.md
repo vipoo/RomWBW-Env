@@ -52,3 +52,6 @@ example: `./romwbw-build-cmd shared` will run the BuildShared.cmd script
 
 Invokes the RC2014 emulator for the binary rom image RomWBW/Binary/RCZ80_dino.rom
 
+* `./run-rcz80-test`
+
+Invokes the RC2014 emulator for the binary rom image RomWBW/Binary/RCZ80_test.rom

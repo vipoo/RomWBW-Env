@@ -1,9 +1,11 @@
 #!/bin/bash
 
-./romwbw-build-prep
+CONFIG=$3
+
+./romwbw-build-prep $CONFIG
 
 function cleanup() {
-  ./romwbw-build-cleanup
+  ./romwbw-build-cleanup $CONFIG
 }
 
 trap cleanup EXIT

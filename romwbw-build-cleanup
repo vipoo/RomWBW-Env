@@ -1,8 +1,10 @@
 #!/bin/bash
 
+CONFIG=$1
+
 rm ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
 rm ./RomWBW/Source/RomDsk/ROM_512KB/Tune.com
-rm ./RomWBW/Source/HBIOS/Config/RCZ80_dino.asm
+rm ./RomWBW/Source/HBIOS/Config/RCZ80_$CONFIG.asm
 rm ./RomWBW/Source/RomDsk/ROM_512KB/backup.pt3
 rm ./RomWBW/Source/RomDsk/ROM_512KB/Demo3.mym
 cp ./store/MBASIC.COM ./RomWBW/Source/RomDsk/ROM_512KB/MBASIC.COM
