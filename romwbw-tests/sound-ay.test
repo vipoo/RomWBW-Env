@@ -1,0 +1,24 @@
+; Only checking for no errors - no verification of register writes
+; set vol 80
+hbios 51 01 00 00 00 80
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; qry vol
+hbios 55 01 00 02
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; set pit 0055
+hbios 52 01 00 FF 00 55
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; qry pitch
+hbios 55 01 00 03
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; play
+hbios 54 01 01 00
+./expect 1 "Ret AF: 0x00"
