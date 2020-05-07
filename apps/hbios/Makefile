@@ -7,6 +7,8 @@ ASSEMBLER=$(UZ80AS)
 
 .PHONY: all
 
-all: hbios.com
+all: hbios.com timetest.com
 
 hbios.com: hbios.asm
+
+timetest.com: timetest.asm

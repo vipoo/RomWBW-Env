@@ -15,10 +15,11 @@ else
   rm -f /tmp/romwbw-clean-up-script
 fi
 
-cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
-cp ./RomWBW/Source/Apps/Tune/Tune.com ./RomWBW/Source/RomDsk/ROM_512KB/Tune.com
-cp ./RomWBW/Source/Apps/Tune/Tunes/Backup.pt3 ./RomWBW/Source/RomDsk/ROM_512KB/backup.pt3
-cp ./RomWBW/Source/Apps/Tune/Tunes/Demo3.mym ./RomWBW/Source/RomDsk/ROM_512KB/Demo3.mym
+cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/
+cp ./apps/hbios/timetest.com ./RomWBW/Source/RomDsk/ROM_512KB/
+cp ./RomWBW/Source/Apps/Tune/Tune.com ./RomWBW/Source/RomDsk/ROM_512KB/
+cp ./RomWBW/Source/Apps/Tune/Tunes/Backup.pt3 ./RomWBW/Source/RomDsk/ROM_512KB/
+cp ./RomWBW/Source/Apps/Tune/Tunes/Demo3.mym ./RomWBW/Source/RomDsk/ROM_512KB/
 mv ./RomWBW/Source/RomDsk/ROM_512KB/MBASIC.COM ./store/
 mv ./RomWBW/Source/RomDsk/ROM_512KB/FDISK80.COM ./store/
 mv ./RomWBW/Source/RomDsk/ROM_512KB/ZDE.COM ./store/
