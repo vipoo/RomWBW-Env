@@ -6,6 +6,7 @@ hbios FC 00
 
 ; get tick
 hbios F8 D0
+./expect 1 "Ret BC: 0x..3c"
 ./expect 1 "Ret AF: 0x00"
 ./clear
 

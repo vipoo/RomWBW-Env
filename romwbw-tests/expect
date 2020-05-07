@@ -19,11 +19,11 @@ else
 fi
 
 NEXT_WAIT_TIME=0
-until [ $(grep -c "$TEST_PATTERN" /tmp/rcoutput.txt) $TEST_OPER "$TEST_VALUE" ] || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
+until [ $(grep -i -c "$TEST_PATTERN" /tmp/rcoutput.txt) $TEST_OPER "$TEST_VALUE" ] || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
   (( NEXT_WAIT_TIME++ ))
   sleep $TIMEPAUSE
 done
 
-X=$(grep -c "$TEST_PATTERN" /tmp/rcoutput.txt)
+X=$(grep -i -c "$TEST_PATTERN" /tmp/rcoutput.txt)
 FN="if [[ ! \"$X\" ${TEST_OPER} \"$TEST_VALUE\" ]]; then exit 1; fi"
 eval $FN
