@@ -1,14 +1,27 @@
 #!/bin/bash
 
+set -x
+
 CONFIG=$1
+EXTRA_FILE=$2
 
 mkdir -p ./store
+
+if [ "$EXTRA_FILE" != "" ]; then
+  cp $EXTRA_FILE ./RomWBW/Source/RomDsk/ROM_512KB/
+  FILENAME=$(basename $EXTRA_FILE)
+  echo -e "rm ./RomWBW/Source/RomDsk/ROM_512KB/${FILENAME}\n" > /tmp/romwbw-clean-up-script
+else
+  rm -f /tmp/romwbw-clean-up-script
+fi
 
 cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
 cp ./RomWBW/Source/Apps/Tune/Tune.com ./RomWBW/Source/RomDsk/ROM_512KB/Tune.com
 cp ./RomWBW/Source/Apps/Tune/Tunes/Backup.pt3 ./RomWBW/Source/RomDsk/ROM_512KB/backup.pt3
 cp ./RomWBW/Source/Apps/Tune/Tunes/Demo3.mym ./RomWBW/Source/RomDsk/ROM_512KB/Demo3.mym
 mv ./RomWBW/Source/RomDsk/ROM_512KB/MBASIC.COM ./store/
+mv ./RomWBW/Source/RomDsk/ROM_512KB/FDISK80.COM ./store/
+mv ./RomWBW/Source/RomDsk/ROM_512KB/ZDE.COM ./store/
 
 cp ./RCZ80_$CONFIG.asm ./RomWBW/Source/HBIOS/Config
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < systimerinc.patch

@@ -2,12 +2,18 @@
 
 CONFIG=$1
 
+if [ -f "/tmp/romwbw-clean-up-script" ]; then
+  $(cat /tmp/romwbw-clean-up-script)
+fi
+
 rm ./RomWBW/Source/RomDsk/ROM_512KB/hbios.com
 rm ./RomWBW/Source/RomDsk/ROM_512KB/Tune.com
 rm ./RomWBW/Source/HBIOS/Config/RCZ80_$CONFIG.asm
 rm ./RomWBW/Source/RomDsk/ROM_512KB/backup.pt3
 rm ./RomWBW/Source/RomDsk/ROM_512KB/Demo3.mym
-cp ./store/MBASIC.COM ./RomWBW/Source/RomDsk/ROM_512KB/MBASIC.COM
+cp ./store/MBASIC.COM ./RomWBW/Source/RomDsk/ROM_512KB/
+cp ./store/FDISK80.COM ./RomWBW/Source/RomDsk/ROM_512KB/
+cp ./store/ZDE.COM ./RomWBW/Source/RomDsk/ROM_512KB/
 
 patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < systimerinc.patch
 patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < 0001-HBIOS-CBIOS-Added-optional-configuration-MDRAMDISABL.patch

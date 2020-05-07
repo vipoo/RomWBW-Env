@@ -1,14 +1,15 @@
 #!/bin/bash
 
 CONFIG=$3
+EXTRA_FILES=$4
 
-./romwbw-build-prep $CONFIG
+./romwbw-build-prep $CONFIG $EXTRA_FILES
 
 function cleanup() {
-  ./romwbw-build-cleanup $CONFIG
+  ./romwbw-build-cleanup $CONFIG $EXTRA_FILES
 }
 
 trap cleanup EXIT
 
-(cd ./RomWBW/Source && /mnt/c/Windows/system32/cmd.exe /C "Build${1}.cmd ${@:2}")
+(cd ./RomWBW/Source && /mnt/c/Windows/system32/cmd.exe /C "Build${1}.cmd ${@:2:2}")
 
