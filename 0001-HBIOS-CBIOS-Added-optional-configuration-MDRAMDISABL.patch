@@ -1,83 +1,3 @@
-From 58f3ece1ea006b336a4c6b27bf969db461bb3b0c Mon Sep 17 00:00:00 2001
-From: Dean Netherton <dean.netherton@gmail.com>
-Date: Sat, 2 May 2020 12:55:52 +1000
-Subject: [PATCH] HBIOS/CBIOS: Added optional configuration MDRAMDISABLE
-
-When #defined in a configurtion - the RAM MD driver is disabled - ROM
-drive is still active
----
- Source/CBIOS/cbios.asm  | 28 +++++++++++++++++++++++++++-
- Source/HBIOS/md.asm     | 17 ++++++++++++++++-
- Source/HBIOS/romldr.asm |  6 +++++-
- 3 files changed, 48 insertions(+), 3 deletions(-)
-
-diff --git a/Source/CBIOS/cbios.asm b/Source/CBIOS/cbios.asm
-index f861e73..e02fa16 100644
---- a/Source/CBIOS/cbios.asm
-+++ b/Source/CBIOS/cbios.asm
-@@ -2086,7 +2086,7 @@ DEV_INIT0:
- 	;POP	BC			; RESTORE LOOP CONTROL
- 	;LD	A,C			; UNIT INDEX TO ACCUM
- 	;;CALL	C,JPHL			; DO IT IF DEVICE TYPE < VDU
--	
-+
- 	LD	A,(HCB + HCB_CONDEV)	; CURRENT CONSOLE UNIT
- 	CP	C			; IS CURRENT CONSOLE?
- 	LD	A,C			; UNIT INDEX TO ACCUM
-@@ -2187,6 +2187,9 @@ MD_INIT3:
- MD_INIT4:
- ;
- #ENDIF
-+	LD	A, (DRVMDEN)	; IF NO RAMDSK INSTALLED, RETURN
-+	CP	$00
-+	RET	Z
- ;
- #IFDEF PLTUNA
- ;
-@@ -2507,6 +2510,7 @@ DRV_INIT3:
- 	LD	B,BF_DIODEVICE		; HBIOS FUNC: REPORT DEVICE INFO
- 	RST	08			; CALL HBIOS, UNIT TO C
- 	LD	A,D			; DEVICE TYPE TO A
-+	CALL	DRV_TSTRAMD
- 	POP	BC			; RESTORE LOOP CONTROL
- 	POP	HL			; RESTORE DRIVE LIST PTR
- 	POP	DE			; RESTORE DE
-@@ -2516,6 +2520,27 @@ DRV_INIT3:
- 	INC	HL			; BUMP PTR
- 	INC	D			; INC TOTAL DEVICE COUNT
- 	RET
-+
-+;
-+; SET DRVMDEN TO FF IF CURRENT DRIVE TYPE IS RAM MD
-+; DEVICE TYPE IN A
-+; DEVICE ATTRIBUTES IN C
-+DRV_TSTRAMD:
-+	PUSH	AF
-+	CP	DIODEV_MD		; IS MD TYPE?
-+	JR	NZ, DRV_TSTRAMD1
-+
-+	LD	A, C
-+	AND	$38			; MASK FLOPPY BITS
-+	CP	$20			; IS RAM?
-+	JR	NZ, DRV_TSTRAMD1
-+
-+	LD	A, $FF
-+	LD	(DRVMDEN), A
-+
-+DRV_TSTRAMD1:
-+	POP	AF
-+	RET
- ;
- DRV_INIT3A:
- 	; CHECK FOR ACTIVE AND RETURN IF NOT
-@@ -2997,6 +3022,7 @@ BOOTVOL	.DW	0			; BOOT VOLUME, MSB=BOOT UNIT, LSB=BOOT SLICE
- HDSPV	.DB	2			; SLICES PER VOLUME FOR HARD DISKS (MUST BE >= 1)
- DRVLST	.FILL	32			; ACTIVE DRIVE LIST USED DURINT DRV_INIT
- DRVLSTC	.DB	0			; ENTRY COUNT FOR ACTIVE DRIVE LIST
-+DRVMDEN	.DB	0			; SET TO FF IF RAM DRIVE INSTALLED
- ;
- #IFDEF PLTWBW
- BNKRAMD	.DB	0			; STARTING BANK ID FOR RAM DRIVE (WBW)
 diff --git a/Source/HBIOS/md.asm b/Source/HBIOS/md.asm
 index 2b9c9c0..8bc3bee 100644
 --- a/Source/HBIOS/md.asm
@@ -142,10 +62,10 @@ index 2b9c9c0..8bc3bee 100644
  ;
  	XOR	A			; INIT SUCCEEDED
 diff --git a/Source/HBIOS/romldr.asm b/Source/HBIOS/romldr.asm
-index 8ec61b2..0bcf1c7 100644
+index 8449108..ed9336c 100644
 --- a/Source/HBIOS/romldr.asm
 +++ b/Source/HBIOS/romldr.asm
-@@ -548,7 +548,11 @@ romload1:
+@@ -549,7 +549,11 @@ romload1:
  	; Record boot information
  	pop	af			; recover source bank
  	ld	l,a			; L := source bank
@@ -158,6 +78,3 @@ index 8ec61b2..0bcf1c7 100644
  	ld	b,BF_SYSSET		; HBIOS func: system set
  	ld	c,BF_SYSSET_BOOTINFO	; BBIOS subfunc: boot info
  	rst	08			; do it
--- 
-2.17.1
-
