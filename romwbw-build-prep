@@ -16,7 +16,6 @@ else
 fi
 
 cp ./apps/hbios/hbios.com ./RomWBW/Source/RomDsk/ROM_512KB/
-cp ./apps/hbios/timetest.com ./RomWBW/Source/RomDsk/ROM_512KB/
 cp ./RomWBW/Source/Apps/Tune/Tune.com ./RomWBW/Source/RomDsk/ROM_512KB/
 cp ./RomWBW/Source/Apps/Tune/Tunes/Backup.pt3 ./RomWBW/Source/RomDsk/ROM_512KB/
 cp ./RomWBW/Source/Apps/Tune/Tunes/Demo3.mym ./RomWBW/Source/RomDsk/ROM_512KB/

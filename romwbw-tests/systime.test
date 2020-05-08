@@ -31,13 +31,3 @@ hbios F8 D0
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret DE:HL: 0x12345679"
 ./clear
-
-; time interrupt vector tests
-timetest
-./expect 1 "a: COUNT=00"
-./expect 1 "b: COUNT=01"
-./expect 1 "c: COUNT=01"
-./expect 1 "d: COUNT=01"
-./expect 3 "A: 0x00"
-./expect 1 "A: 0xFF"
-./expect 0 "FAILED"
