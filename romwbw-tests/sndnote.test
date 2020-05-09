@@ -1,26 +1,28 @@
 
-; BF_SNDPIT, Driver (C) 00, (D) ignored, (E) ignored 00, note (HL) 00 01
-hbios 53 00 00 FF 00 00
+; Set note 00:58 -> a1#
+hbios 53 00 00 00 00 30
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
+;query period
 hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x03DC"
 ./clear
 
-
-hbios 53 00 00 FF 00 04
+; set note 00:34 -> b1
+hbios 53 00 00 00 00 34
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
+; query period
 hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
-./expect 1 "Ret HL: 0x03A4"
+./expect 1 "Ret HL: 0x03A5"
 ./clear
 
-
-hbios 53 00 00 FF 00 2C
+; set note 00:5C -> A2
+hbios 53 00 00 FF 00 5C
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -29,8 +31,8 @@ hbios 55 00 00 03
 ./expect 1 "Ret HL: 0x020B"
 ./clear
 
-
-hbios 53 00 00 FF 00 4C
+; note F3
+hbios 53 00 00 FF 00 7C
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -39,8 +41,8 @@ hbios 55 00 00 03
 ./expect 1 "Ret HL: 0x0149"
 ./clear
 
-
-hbios 53 00 00 FF 00 6C
+; note 9C -> c4#
+hbios 53 00 00 FF 00 9c
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -49,8 +51,8 @@ hbios 55 00 00 03
 ./expect 1 "Ret HL: 0x00CF"
 ./clear
 
-
-hbios 53 00 00 FF 00 7C
+; note AC -> F4
+hbios 53 00 00 FF 00 AC
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -59,8 +61,8 @@ hbios 55 00 00 03
 ./expect 1 "Ret HL: 0x00A4"
 ./clear
 
-
-hbios 53 00 00 FF 00 F7
+;Note 01:28 C7
+hbios 53 00 00 FF 01 28
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -69,7 +71,16 @@ hbios 55 00 00 03
 ./expect 1 "Ret HL: 0x001B"
 ./clear
 
+; OUT OF RANGE:
+
+; note 00:08 -> D0
+hbios 53 00 00 FF 00 08
+./expect 1 "Ret AF: 0xFF"
+./clear
+
+
 ;/OVERFLOW
-hbios 53 00 00 FF 00 F9
+
+hbios 53 00 00 FF 03 FF
 ./expect 1 "Ret AF: 0xFF"
 ./clear
