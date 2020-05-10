@@ -1,3 +1,15 @@
+; note 9C -> B8
+hbios 53 01 00 FF 01 84
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 01 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x000E"
+./clear
+
+
+
 ; Only checking for no errors - no verification of register writes
 ; set vol 80
 hbios 51 01 00 00 00 80
@@ -22,3 +34,25 @@ hbios 55 01 00 03
 ; play
 hbios 54 01 01 00
 ./expect 1 "Ret AF: 0x00"
+./clear
+
+; Set note 00:00 -> A0#
+hbios 53 01 00 00 00 00
+./expect 1 "Ret AF: 0x00"
+./clear
+
+;query period
+hbios 55 01 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x0F72"
+./clear
+
+; note 9C -> A1#
+hbios 53 01 00 FF 00 30
+./expect 1 "Ret AF: 0x00"
+./clear
+
+hbios 55 01 00 03
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x07B9"
+./clear

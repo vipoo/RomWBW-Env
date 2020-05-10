@@ -42,7 +42,7 @@ hbios 55 00 00 03
 ./clear
 
 ; note 9C -> c4#
-hbios 53 00 00 FF 00 9c
+hbios 53 00 00 FF 00 9C
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
