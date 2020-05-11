@@ -28,6 +28,7 @@ tune backup --hbios
 ./expect gt 2 "PORT OUT: F8, 9F"
 ./clear
 
+./exit-next
 tune backup --hbios +t2
 ./expect 1 "Playing..."
 ./expect gt 2 "PORT OUT: FC, BF"
@@ -35,6 +36,7 @@ tune backup --hbios +t2
 ./expect gt 2 "PORT OUT: F8, 9F"
 ./clear
 
+./exit-next
 tune backup --hbios -t2
 ./expect 1 "Playing..."
 ./expect gt 2 "PORT OUT: FC, BF"
