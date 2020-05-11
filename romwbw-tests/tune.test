@@ -16,6 +16,7 @@ tune demo3.mym --hbios
 
 ./exit-next
 tune backup --hbios
+./expect 1 "Playing..."
 ; Never plays note zero - no sound.
 ./expect 0 "PORT OUT: FC, 00"
 ./expect 0 "PORT OUT: F8, 00"
@@ -25,3 +26,19 @@ tune backup --hbios
 ./expect gt 2 "PORT OUT: FC, BF"
 ./expect gt 2 "PORT OUT: F8, BF"
 ./expect gt 2 "PORT OUT: F8, 9F"
+./clear
+
+tune backup --hbios +t2
+./expect 1 "Playing..."
+./expect gt 2 "PORT OUT: FC, BF"
+./expect gt 2 "PORT OUT: F8, BF"
+./expect gt 2 "PORT OUT: F8, 9F"
+./clear
+
+tune backup --hbios -t2
+./expect 1 "Playing..."
+./expect gt 2 "PORT OUT: FC, BF"
+./expect gt 2 "PORT OUT: F8, BF"
+./expect gt 2 "PORT OUT: F8, 9F"
+./clear
+
