@@ -12,9 +12,20 @@ hbios 54 01 01 00
 
 ; inc time 20 (1/3 of a second)
 hbios F9 D2 14 00
+./expect 1 "Ret AF: 0x00"
 ./expect-lines 1 sound-ay-boot-beep-off.fixture
 ./clear
 
 ; can play now
+hbios 54 01 01 00
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; inc time
+hbios F9 D2 02 00
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; can still play now
 hbios 54 01 01 00
 ./expect 1 "Ret AF: 0x00"
