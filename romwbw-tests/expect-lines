@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo dos2unix  /tmp/rcoutput.txt > /dev/null 2>&1
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\n/g' /tmp/rcoutput.txt > /tmp/rcoutput2.txt
 
 if [ "$CI" == "true" ]; then
   TIMERCOUNT=80
@@ -15,11 +15,11 @@ TEST_VALUE=$1
 TEST_PATTERN="$(sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' $2)"
 
 NEXT_WAIT_TIME=0
-until [ $(grep  -Pzo -i -c "$TEST_PATTERN" /tmp/rcoutput.txt) $TEST_OPER "$TEST_VALUE" ] || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
+until [ $(grep  -Pzo -i -c "$TEST_PATTERN" /tmp/rcoutput2.txt) $TEST_OPER "$TEST_VALUE" ] || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
   (( NEXT_WAIT_TIME++ ))
   sleep $TIMEPAUSE
 done
 
-X=$(grep -Pzo  -i -c "$TEST_PATTERN" /tmp/rcoutput.txt)
+X=$(grep -Pzo  -i -c "$TEST_PATTERN" /tmp/rcoutput2.txt)
 FN="if [[ ! \"$X\" ${TEST_OPER} \"$TEST_VALUE\" ]]; then exit 1; fi"
 eval $FN
