@@ -18,6 +18,7 @@ NEXT_WAIT_TIME=0
 until [ $(grep  -Pzo -i -c "$TEST_PATTERN" /tmp/rcoutput2.txt) $TEST_OPER "$TEST_VALUE" ] || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
   (( NEXT_WAIT_TIME++ ))
   sleep $TIMEPAUSE
+  sed -E ':a;N;$!ba;s/\r{0,1}\n/\n/g' /tmp/rcoutput.txt > /tmp/rcoutput2.txt
 done
 
 X=$(grep -Pzo  -i -c "$TEST_PATTERN" /tmp/rcoutput2.txt)
