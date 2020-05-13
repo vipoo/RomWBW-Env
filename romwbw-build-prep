@@ -25,6 +25,7 @@ mv ./RomWBW/Source/RomDsk/ROM_512KB/ZDE.COM ./store/
 
 cp ./RCZ80_$CONFIG.asm ./RomWBW/Source/HBIOS/Config
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < systimerinc.patch
+patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-force-timer-on.patch
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-HBIOS-CBIOS-Added-optional-configuration-MDRAMDISABL.patch
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-AY38910-force-enable.patch
 #patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < auddump.patch

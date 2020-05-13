@@ -1,0 +1,13 @@
+diff --git a/Source/HBIOS/cfg_state.inc b/Source/HBIOS/cfg_state.inc
+index 754f434..a5797dc 100644
+--- a/Source/HBIOS/cfg_state.inc
++++ b/Source/HBIOS/cfg_state.inc
+@@ -2,7 +2,7 @@
+ #IFNDEF CFG_STATE
+ #DEFINE CFG_STATE
+ 
+-SYSTIMEN	.EQU	FALSE
++SYSTIMEN	.EQU	TRUE
+ 
+ #IF (CTCENABLE & INTMODE == 2 & CTCTIMER)
+ SYSTIMEN	.SET	TRUE

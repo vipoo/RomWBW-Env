@@ -22,7 +22,7 @@ hbios F8 D0
 ./clear
 
 ; tick int
-hbios F9 D2
+hbios F9 D2 01 00
 ./expect 1 "Ret AF: 0x00"
 ./clear
 

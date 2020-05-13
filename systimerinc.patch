@@ -1,8 +1,8 @@
 diff --git a/Source/HBIOS/hbios.asm b/Source/HBIOS/hbios.asm
-index c3a068e..6f420a5 100644
+index fe3303e..2579d0c 100644
 --- a/Source/HBIOS/hbios.asm
 +++ b/Source/HBIOS/hbios.asm
-@@ -2553,6 +2553,10 @@ SYS_SET:
+@@ -2582,6 +2582,10 @@ SYS_SET:
  	JR	Z,SYS_SETTIMER
  	CP	BF_SYSSET_SECS
  	JR	Z,SYS_SETSECS
@@ -13,7 +13,7 @@ index c3a068e..6f420a5 100644
  	CP	BF_SYSSET_BOOTINFO
  	JR	Z,SYS_SETBOOTINFO
  	OR	$FF			; SIGNAL ERROR
-@@ -2582,6 +2586,16 @@ SYS_SETTIMER:
+@@ -2611,6 +2615,22 @@ SYS_SETTIMER:
  	XOR	A
  	RET
  ;
@@ -21,9 +21,15 @@ index c3a068e..6f420a5 100644
 +;   SIMULATE A TIMER INT
 +;
 +SYS_TIMERINC:
++	PUSH	DE
 +	HB_DI
 +	CALL	HB_TIMINT
 +	HB_EI
++
++	POP	DE
++	DEC	D
++	JR	NZ, SYS_TIMERINC
++
 +	XOR	A
 +	RET
 +;
@@ -31,10 +37,10 @@ index c3a068e..6f420a5 100644
  ;   ON ENTRY:
  ;     DE:HL: SECONDS VALUE (32 BIT)
 diff --git a/Source/HBIOS/hbios.inc b/Source/HBIOS/hbios.inc
-index 17a9ae2..5563ddd 100644
+index 068114c..ff3ccb0 100644
 --- a/Source/HBIOS/hbios.inc
 +++ b/Source/HBIOS/hbios.inc
-@@ -95,6 +95,8 @@ BF_SYSGET_BNKINFO	.EQU	$F2	; GET BANK ASSIGNMENT INFO
+@@ -105,6 +105,8 @@ BF_SYSGET_BNKINFO	.EQU	$F2	; GET BANK ASSIGNMENT INFO
  BF_SYSSET_TIMER		.EQU	$D0	; SET TIMER VALUE
  BF_SYSSET_SECS		.EQU	$D1	; SET SECONDS VALUE
  BF_SYSSET_BOOTINFO	.EQU	$E0	; SET BOOT INFORMATION
