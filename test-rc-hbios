@@ -101,27 +101,36 @@ if [[ ${line:0:1} == "." ]] ; then
   fi
 
 else
+  if [[ ${line:0:1} == "\`" ]] ; then
 
-  sudo screen -S romwbwtestrunner -p 0 -X stuff "$line"
-  sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
+    eval ${line:1}
 
-  if [ "$EXIT_NEXT" != "" ]; then
-    sleep $EXIT_NEXT
-    unset EXIT_NEXT
-    sudo screen -S romwbwtestrunner -p 0 -X stuff "^C"
+  else
+
+    line=$(eval echo $line)
+
+    sudo screen -S romwbwtestrunner -p 0 -X stuff "$line"
+    sudo screen -S romwbwtestrunner -p 0 -X stuff "^M"
+
+    if [ "$EXIT_NEXT" != "" ]; then
+      sleep $EXIT_NEXT
+      unset EXIT_NEXT
+      sudo screen -S romwbwtestrunner -p 0 -X stuff "^C"
+    fi
+
+    (( MARKER++ ))
+    sudo screen -S romwbwtestrunner -p 0 -X stuff ";MK $MARKER^M"
+
+    NEXT_WAIT_TIME=0
+    until tail -n 2 /tmp/rcoutput.txt | grep -q ";MK $MARKER" || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
+      (( NEXT_WAIT_TIME++ ))
+      sleep $TIMEPAUSE
+    done
+
   fi
-
-  (( MARKER++ ))
-  sudo screen -S romwbwtestrunner -p 0 -X stuff ";MK $MARKER^M"
-
-  NEXT_WAIT_TIME=0
-  until tail -n 2 /tmp/rcoutput.txt | grep -q ";MK $MARKER" || [ $NEXT_WAIT_TIME -eq $TIMERCOUNT ]; do
-    (( NEXT_WAIT_TIME++ ))
-    sleep $TIMEPAUSE
-  done
-
 fi
 fi
+
 
 done <<< "$CMD"
 
