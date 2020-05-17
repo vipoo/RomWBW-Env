@@ -10,6 +10,8 @@ HBIOS F6 00 00 00 00 10
 ./expect 1 "Ret HL: 0x${BLCK1}"
 ./clear
 
+
+
 ; Allocate another 16 bytes
 HBIOS F6 00 00 00 00 10
 ./expect 1 "Ret AF: 0x00"
@@ -20,14 +22,42 @@ HBIOS F6 00 00 00 00 10
 ./clear
 
 
+
 ; Release block1
 HBIOS F7 00 00 00 ${BLCK1:0:2} ${BLCK1:2:2}
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
+
 ; Allocate memory again - block 1 is now a hole in heap
 HBIOS F6 00 00 00 00 10
 ./expect 1 "Ret AF: 0x00"
+`BLCK3=$(grep -i "Ret HL: 0x...." /tmp/rcoutput.txt | cut -d "x" -f 2)
+`echo "Memory was allocated at 0x${BLCK3}"
+./expect 1 "Ret HL: 0x${BLCK3}"
+./expect 0 "Ret HL: 0x${BLCK2}"
 ./expect 0 "Ret HL: 0x${BLCK1}"
+./clear
+
+
+; Release block2
+HBIOS F7 00 00 00 ${BLCK2:0:2} ${BLCK2:2:2}
+./expect 1 "Ret AF: 0x00"
+./clear
+
+
+
+; Release block3
+HBIOS F7 00 00 00 ${BLCK3:0:2} ${BLCK3:2:2}
+./expect 1 "Ret AF: 0x00"
+./clear
+
+
+
+; Allocate memory again - should be reusing block's 1 address
+HBIOS F6 00 00 00 00 10
+./expect 1 "Ret AF: 0x00"
+./expect 1 "Ret HL: 0x${BLCK1}"
+`echo "Memory was allocated at 0x${BLCK1}"
 ./clear
 

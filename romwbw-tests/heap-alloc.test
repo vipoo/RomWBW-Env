@@ -13,3 +13,13 @@ HBIOS F6 00 00 00 00 10
 HBIOS F7 00 00 00 ${BLCK1:0:2} ${BLCK1:2:2}
 ./expect 1 "Ret AF: 0x00"
 ./clear
+
+; Attempt to allocate too much
+HBIOS F6 00 00 00 60 00
+./expect 1 "Ret AF: 0xFF"
+
+;Capture Block address
+`BLCK1=$(grep -i "Ret HL: 0x...." /tmp/rcoutput.txt | cut -d "x" -f 2)
+`echo "Free heap space 0x${BLCK1}"
+./expect 1 "Ret HL: 0x${BLCK1}"
+./clear
