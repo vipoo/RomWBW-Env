@@ -14,9 +14,9 @@ HBIOS F7 00 00 00 ${BLCK1:0:2} ${BLCK1:2:2}
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-; Attempt to allocate too much
+; Attempt to allocate too much (code 255 - 5)
 HBIOS F6 00 00 00 60 00
-./expect 1 "Ret AF: 0xFF"
+./expect 1 "Ret AF: 0xFB"
 
 ;Capture Block address
 `BLCK1=$(grep -i "Ret HL: 0x...." /tmp/rcoutput.txt | cut -d "x" -f 2)
