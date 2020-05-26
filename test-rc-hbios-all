@@ -9,7 +9,11 @@ for i in ./romwbw-tests/*.test; do
   filename="${filename%.*}"
 
   # Disable audio function tests
-  if [[ "$filename" =~ ^audio* ]]; then
+  if [[ "$filename" =~ ^sound-ay* ]]; then
+    continue
+  fi;
+
+  if [[ "$filename" =~ ^tune* ]]; then
     continue
   fi;
 
