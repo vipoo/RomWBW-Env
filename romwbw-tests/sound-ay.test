@@ -15,45 +15,51 @@ hbios 52 01 00 FF 00 00
 
 ; 1 below max pitch is ok
 ; BF_SNDPIT, Driver (C) 01, Channel (D) ignored, (E) ignored 00, pitch (HL) 0FFE
-hbios 52 01 00 FF 0F FE
+hbios 52 01 00 FF 00 10
+./expect 1 "Ret AF: 0x00"
+./clear
+
+; 1 below max pitch is ok
+; BF_SNDPIT, Driver (C) 01, Channel (D) ignored, (E) ignored 00, pitch (HL) 0FFE
+hbios 52 00 00 FF 0F FE
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; max pitch is ok
 ; BF_SNDPIT, Driver (C) 01, Channel (D) ignored, (E) ignored 00, pitch (HL) 0FFF
-hbios 52 01 00 FF 0F FF
+hbios 52 00 00 FF 0F FF
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; Overflow pitch returns error
 ; BF_SNDPIT, Driver (C) 01, Channel (D) ignored, (E) ignored 00, pitch (HL) 1000
-hbios 52 01 00 FF 10 00
+hbios 52 00 00 FF 10 00
 ./expect 1 "Ret AF: 0xFF"
 ./clear
 
 ; Only checking for no errors - no verification of register writes
 ; set vol 80
-hbios 51 01 00 00 00 80
+hbios 51 00 00 00 00 80
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; qry vol
-hbios 55 01 00 02
+hbios 55 00 00 02
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; set pit 0055
-hbios 52 01 00 FF 00 55
+hbios 52 00 00 FF 00 55
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; qry pitch
-hbios 55 01 00 03
+hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; play
-hbios 54 01 01 00
+hbios 54 00 01 00
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -61,32 +67,32 @@ hbios 54 01 01 00
 ; TEST NOTE MAPPING
 
 ; Set note 00:00 -> A0#
-hbios 53 01 00 00 00 00
+hbios 53 00 00 00 00 00
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ;query period
-hbios 55 01 00 03
+hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x0F72"
 ./clear
 
 ; note 9C -> A1#
-hbios 53 01 00 FF 00 30
+hbios 53 00 00 FF 00 30
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 01 00 03
+hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x07B9"
 ./clear
 
 ; note 9C -> B8
-hbios 53 01 00 FF 01 84
+hbios 53 00 00 FF 01 84
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 01 00 03
+hbios 55 00 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x000E"
 ./clear

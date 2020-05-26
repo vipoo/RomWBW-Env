@@ -6,7 +6,7 @@
 ./clear
 
 ; play not yet
-hbios 54 01 01 00
+hbios 54 00 01 00
 ./expect 1 "Ret AF: 0xFF"
 ./clear
 
@@ -17,7 +17,7 @@ hbios F9 D2 14 00
 ./clear
 
 ; can play now
-hbios 54 01 01 00
+hbios 54 00 01 00
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
@@ -27,5 +27,5 @@ hbios F9 D2 02 00
 ./clear
 
 ; can still play now
-hbios 54 01 01 00
+hbios 54 00 01 00
 ./expect 1 "Ret AF: 0x00"

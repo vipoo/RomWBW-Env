@@ -2,10 +2,10 @@
 ./expect 1 "PORT OUT: F8, BF"
 ./clear
 
-hbios 51 00 00 00 00 00
+hbios 51 01 00 00 00 00
 ; BF_SNDVOL, Driver 00, S (ignored), E (ignored), H (ignored) L Volume 00
 
-hbios 54 00 01 00
+hbios 54 01 01 00
 ; BF_SNDPLAY, Driver (C) 00, Channel (D) 01, (E) ignored 00
 
 ./expect 1 "PORT OUT: FC, BF"

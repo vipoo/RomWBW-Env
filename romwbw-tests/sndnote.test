@@ -1,72 +1,72 @@
 
 ; Set note 00:58 -> a1#
-hbios 53 00 00 00 00 30
+hbios 53 01 00 00 00 30
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ;query period
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x03DC"
 ./clear
 
 ; set note 00:34 -> b1
-hbios 53 00 00 00 00 34
+hbios 53 01 00 00 00 34
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
 ; query period
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x03A5"
 ./clear
 
 ; set note 00:5C -> A2
-hbios 53 00 00 FF 00 5C
+hbios 53 01 00 FF 00 5C
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x020B"
 ./clear
 
 ; note F3
-hbios 53 00 00 FF 00 7C
+hbios 53 01 00 FF 00 7C
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x0149"
 ./clear
 
 ; note 9C -> c4#
-hbios 53 00 00 FF 00 9C
+hbios 53 01 00 FF 00 9C
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x00CF"
 ./clear
 
 ; note AC -> F4
-hbios 53 00 00 FF 00 AC
+hbios 53 01 00 FF 00 AC
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x00A4"
 ./clear
 
 ;Note 01:28 C7
-hbios 53 00 00 FF 01 28
+hbios 53 01 00 FF 01 28
 ./expect 1 "Ret AF: 0x00"
 ./clear
 
-hbios 55 00 00 03
+hbios 55 01 00 03
 ./expect 1 "Ret AF: 0x00"
 ./expect 1 "Ret HL: 0x001B"
 ./clear
@@ -74,13 +74,13 @@ hbios 55 00 00 03
 ; OUT OF RANGE:
 
 ; note 00:08 -> D0
-hbios 53 00 00 FF 00 08
+hbios 53 01 00 FF 00 08
 ./expect 1 "Ret AF: 0xFF"
 ./clear
 
 
 ;/OVERFLOW
 
-hbios 53 00 00 FF 03 FF
+hbios 53 01 00 FF 03 FF
 ./expect 1 "Ret AF: 0xFF"
 ./clear
