@@ -1,0 +1,325 @@
+RESTART	EQU	$0000		; CP/M RESTART VECTOR
+BDOS	EQU	$0005		; BDOS INVOCATION VECTOR
+
+SYSGET	EQU	$F8
+
+SYSSETCPY	EQU	$F4
+SYSBNKCPY	EQU	$F5
+
+HCB_BIDUSR	EQU	$8E		; USER BANK (TPA)
+HCB_BIDBIOS	EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
+
+	ORG	100H
+
+	LD	HL, (6)
+	LD	SP, HL
+
+	LD	HL, HELLO
+	CALL	PRTSTRZ
+
+	CALL	PARSE
+
+	LD	B, SYSGET
+	LD	A, (SUBFNCODE)
+	LD	C, A
+	LD	D, 0
+	LD	A, (UNITNUMBER)
+	LD	E, A
+	RST	08
+
+	LD	(DRVDATA), DE
+
+	PUSH	AF
+	CALL	PRTSTRD
+	DEFM	"Ret A: 0x$"
+	POP	AF
+	CALL	PRTHEX
+
+	CALL	PRTSTRD
+	DEFM	"\r\nRet HL: 0x$"
+	CALL	PRTHEX_HL
+	CALL	PRTSTRD
+	DEFM	"\r\nRet DE: 0x$"
+	CALL	PRTHEX_DE
+	CALL	CRLF			; formatting
+
+
+	; copy data in hbios bank at DE
+
+	LD	B, SYSSETCPY
+	LD	D, HCB_BIDUSR
+	LD	E, HCB_BIDBIOS
+	LD	A, (DATALENGTH)
+	LD	L, A
+	LD	H, 0
+	RST	08
+
+	PUSH	AF
+	CALL	PRTSTRD
+	DEFM	"SYSSETCPY A: 0x$"
+	POP	AF
+	CALL	PRTHEX
+	CALL	CRLF			; formatting
+
+	LD	B, SYSBNKCPY
+	LD	DE, STORE
+	LD	HL, (DRVDATA)
+	RST	08
+
+
+	PUSH	AF
+	CALL	PRTSTRD
+	DEFM	"SYSBNKCPY A: 0x$"
+	POP	AF
+	CALL	PRTHEX
+
+	CALL	CRLF			; formatting
+	CALL	CRLF			; formatting
+
+	CALL	PRTSTRD
+	DEFM	"DRIVER DATA: $"
+
+	LD	A, (DATALENGTH)
+	LD	B, A
+	LD	HL, STORE
+
+LOOP:
+	LD	A, (HL)
+	CALL	PRTHEX
+
+	CALL	PRTSTRD
+	DEFM	" $"
+
+	INC	HL
+	DJNZ	LOOP
+
+
+EXIT:
+	CALL	CRLF			; formatting
+	JP	RESTART		; return to CP/M
+
+HELLO:
+	DEFM	"DRIVER FN TEST\r\n$"
+MSGUSE:
+	DEFM	"DRIVERFN SS UU LL\r\n"
+	DEFM	"  SS - Subfunction code (01, 11, 41 or 51)\r\n"
+	DEFM	"  UU - Unit number of driver\r\n"
+	DEFM	"  LL - expected size of data set\r\n"
+	DEFM	"$"
+
+MSGPRM:
+	DEFM	"Parameter error$"
+
+DRVDATA:
+	DEFW	0
+
+SUBFNCODE:
+	DEFB	0
+UNITNUMBER:
+	DEFB	0
+DATALENGTH:
+	DEFB	0
+
+STORE:
+	DEFS	200, 0
+;===============================================================================
+; PARSE COMMAND LINE
+; IF PARSE ERROR, WRITES ERROR STRING AND THEN JP TO EXIT
+
+PARSE:
+	LD	HL, $81			; POINT TO START OF COMMAND TAIL (AFTER LENGTH BYTE)
+
+	CALL	PARSEHEXBYTE
+	LD	(SUBFNCODE), A
+
+	CALL	PARSEHEXBYTE
+	LD	(UNITNUMBER), A
+
+	CALL	PARSEHEXBYTE
+	LD	(DATALENGTH), A
+	RET
+
+PARSEHEXBYTE:
+	CALL	NONBLANK		; SKIP BLANKS
+
+;===============================================================================
+
+READHEXBYTE:				; READ 2 CHARS - AND CONVERT TO A BYTE - RETURNED IN A
+	LD	A, (HL)
+	OR	A
+	JP	Z, ERRPRM
+	CALL	FROMCHAR
+	LD	A, B
+	RLCA
+	RLCA
+	RLCA
+	RLCA
+	LD	C, A
+	INC	HL
+
+	LD	A, (HL)
+	OR	A
+	JP	Z, ERRPRM
+	CALL	FROMCHAR
+	LD	A, B
+	INC	HL
+
+	OR	C
+	LD	C, A
+	RET
+
+;===============================================================================
+
+					; CONVERT CHAR IN A TO A NUMBER FROM 0-15 BASED ON IT HEX STRING VALUE
+FROMCHAR:				; VALUE IS RETURNED IN B
+	SUB	'0'			;
+	CP	10			; GREATER THAN 9
+	JR	C, NUMCHAR
+	SUB	'A' - '0'
+	CP	7			; GREATER THAN F
+	JP	NC, ERRPRM
+	ADD	A, 10
+
+NUMCHAR:
+	LD	B, A
+	RET
+
+;===============================================================================
+; GET THE NEXT NON-BLANK CHARACTER FROM (HL).
+
+NONBLANK:
+	LD	A, (HL)			; LOAD NEXT CHARACTER
+	OR	A
+	JP	Z, ERRUSE
+	CP	' '			; STRING ENDS WITH A NULL
+	JR	NZ, ERRPRM		; IF NO BLANK FOUND AS EXPECTED, RETURN ERROR TO USER
+
+SKIPBLANK:
+	INC	HL			; IF BLANK, INCREMENT CHARACTER POINTER
+	LD	A, (HL)			; LOAD NEXT CHARACTER
+	OR	A			; STRING ENDS WITH A NULL
+	RET	Z			; IF NULL, RETURN POINTING TO NULL
+	CP	' '			; CHECK FOR BLANK
+	RET	NZ			; RETURN IF NOT BLANK
+	JR	SKIPBLANK		; AND LOOP
+
+;===============================================================================
+; ERRORS
+
+ERRUSE:					; COMMAND USAGE ERROR (SYNTAX)
+	LD	HL, MSGUSE
+	JR	ERR
+
+ERRPRM:					; COMMAND PARAMETER ERROR (SYNTAX)
+	LD	HL, MSGPRM
+
+ERR:					; PRINT ERROR STRING AND RETURN ERROR SIGNAL
+	CALL	CRLF			; PRINT NEWLINE
+	CALL	PRTSTRZ			; PRINT ERROR STRING
+	JP	EXIT
+
+;===============================================================================
+; PRINT CHARACTER IN A WITHOUT DESTROYING ANY REGISTERS
+
+PRTCHR:
+	PUSH	BC			; SAVE REGISTERS
+	PUSH	DE
+	PUSH	HL
+	LD	E, A			; CHARACTER TO PRINT IN E
+	LD	C, $02			; BDOS FUNCTION TO OUTPUT A CHARACTER
+	CALL	BDOS			; DO IT
+	POP	HL			; RESTORE REGISTERS
+	POP	DE
+	POP	BC
+	RET
+
+;===============================================================================
+; PRINT A STRING DIRECT: REFERENCED BY POINTER AT TOP OF STACK
+; STRING MUST BE TERMINATED BY '$'
+; USAGE:
+;   CALL PRTSTR
+;   .DB  "HELLO$"
+
+PRTSTRD:
+	EX	(SP), HL
+	CALL	PRTSTRZ
+	EX	(SP), HL
+	RET
+
+
+;===============================================================================
+; PRINT A $ TERMINATED STRING AT (HL) WITHOUT DESTROYING ANY REGISTERS
+PRTSTRZ:
+	LD	A, (HL)			; GET NEXT CHAR
+	INC	HL
+	CP	'$'
+	RET	Z
+	CALL	PRTCHR
+	JR	PRTSTRZ
+
+PRTHEX_DE:
+	PUSH	HL
+	LD	HL, DE
+	CALL	PRTHEX_HL
+	POP	HL
+	RET
+
+PRTHEX_HL:
+	LD	A, H
+	CALL	PRTHEX
+	LD	A, L
+	CALL	PRTHEX
+	RET
+;===============================================================================
+; PRINT THE VALUE IN A IN HEX WITHOUT DESTROYING ANY REGISTERS
+
+PRTHEX:
+	PUSH	AF			; SAVE AF
+	PUSH	DE			; SAVE DE
+	CALL	HEXASCII		; CONVERT VALUE IN A TO HEX CHARS IN DE
+	LD	A, D			; GET THE HIGH ORDER HEX CHAR
+	CALL	PRTCHR			; PRINT IT
+	LD	A, E			; GET THE LOW ORDER HEX CHAR
+	CALL	PRTCHR			; PRINT IT
+	POP	DE			; RESTORE DE
+	POP	AF			; RESTORE AF
+	RET				; DONE
+
+;===============================================================================
+; CONVERT BINARY VALUE IN A TO ASCII HEX CHARACTERS IN DE
+
+HEXASCII:
+	LD	D, A			; SAVE A IN D
+	CALL	HEXCONV			; CONVERT LOW NIBBLE OF A TO HEX
+	LD	E, A			; SAVE IT IN E
+	LD	A, D			; GET ORIGINAL VALUE BACK
+	RLCA				; ROTATE HIGH ORDER NIBBLE TO LOW BITS
+	RLCA
+	RLCA
+	RLCA
+	CALL	HEXCONV			; CONVERT NIBBLE
+	LD	D, A			; SAVE IT IN D
+	RET				; DONE
+
+;===============================================================================
+; CONVERT LOW NIBBLE OF A TO ASCII HEX
+
+HEXCONV:
+	AND	$0F	     		; LOW NIBBLE ONLY
+	ADD	A, $90
+	DAA
+	ADC	A, $40
+	DAA
+	RET
+
+;===============================================================================
+; START A NEW LINE
+
+CRLF:
+	LD	A, 13			; <CR>
+	CALL	PRTCHR			; PRINT IT
+	LD	A, 10			; <LF>
+	JR	PRTCHR			; PRINT IT
+
+DATA:
+	NOP

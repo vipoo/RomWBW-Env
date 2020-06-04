@@ -1,5 +1,6 @@
 **/*.com
 **/*.lst
 **/*.obj
+**/*.lis
 
 store

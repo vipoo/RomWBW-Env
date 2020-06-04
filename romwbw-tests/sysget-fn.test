@@ -1,0 +1,9 @@
+#!/bin/bash
+
+; Retrieve TMS configuration data
+driverfn 41 00 0E
+
+./expect 1 "SYSSETCPY A: 0x00"
+./expect 1 "SYSBNKCPY A: 0x00"
+
+./expect 1 "DRIVER DATA: 00 00 00 00 88 99 00 70 00 00 01 00 00 F0"

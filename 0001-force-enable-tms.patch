@@ -1,0 +1,17 @@
+diff --git a/Source/HBIOS/tms.asm b/Source/HBIOS/tms.asm
+index 3d16b75..2758823 100644
+--- a/Source/HBIOS/tms.asm
++++ b/Source/HBIOS/tms.asm
+@@ -110,9 +110,9 @@ TMS_INIT:
+ 	JR	Z,TMS_INIT1		; CONTINUE IF PRESENT
+ ;
+ 	; HARDWARE NOT PRESENT
+-	PRTS(" NOT PRESENT$")
+-	OR	$FF			; SIGNAL FAILURE
+-	RET
++	; PRTS(" NOT PRESENT$")
++	; OR	$FF			; SIGNAL FAILURE
++	; RET
+ ;
+ TMS_INIT1:
+ 	CALL 	TMS_CRTINIT		; SETUP THE TMS CHIP REGISTERS
