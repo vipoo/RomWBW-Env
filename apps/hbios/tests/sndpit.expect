@@ -8,4 +8,4 @@ set -ex
 ./expect 1 "E: 0xFF"
 ./expect 1 "H: 0xA5"
 ./expect 1 "L: 0x55"
-./expect 1 "HBIOS: BF_SNDPIT, Driver in C 00, Channel in D: 01, Pitch in HL: A555"
+./expect 1 "HBIOS: BF_SNDPRD, Driver in C 00, Pitch in HL: A555"

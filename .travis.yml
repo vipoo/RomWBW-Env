@@ -15,9 +15,9 @@ before_install:
   - git submodule update --init --recursive
 
 install:
-  - wget https://github.com/vipoo/cpm/releases/download/v0.0.2/cpm-v0.0.2.tar.gz
+  - wget https://github.com/vipoo/cpm/releases/download/v0.0.6/cpm-v0.0.6.tar.gz
   - mkdir -p cpm
-  - tar -xzvf cpm-v0.0.2.tar.gz -C ./cpm
+  - tar -xzvf cpm-v0.0.6.tar.gz -C ./cpm
   - wget https://github.com/vipoo/RC2014/releases/download/v0.0.2/rc2014-v0.0.2.tar.gz
   - mkdir -p rc2014
   - tar -xzvf rc2014-v0.0.2.tar.gz -C ./rc2014
