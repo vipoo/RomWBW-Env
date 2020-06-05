@@ -1,0 +1,49 @@
+diff --git a/Source/HBIOS/hbios.asm b/Source/HBIOS/hbios.asm
+index a2a4575..9c59a9f 100644
+--- a/Source/HBIOS/hbios.asm
++++ b/Source/HBIOS/hbios.asm
+@@ -369,7 +369,15 @@ HBX_ROM:
+ ;
+ HBX_ROM:
+ 	RLCA				; TIMES 2 - GET 16K PAGE INSTEAD OF 32K
++#IFDEF DINOTRONHACK
++	PUSH	AF
++	CALL	BITFLIP
++#ENDIF
+ 	OUT	(MPGSEL_0),A		; BANK_0: 0K - 16K
++#IFDEF DINOTRONHACK
++	POP	AF
++	CALL	BITFLIP
++#ENDIF
+ 	INC	A			;
+ 	OUT	(MPGSEL_1),A		; BANK_1: 16K - 32K
+ #IF (CPUFAM == CPU_Z280)
+@@ -377,6 +385,16 @@ HBX_ROM:
+ 	.DB	$ED,$65
+ #ENDIF
+ 	RET				; DONE
++
++#IFDEF DINOTRONHACK
++BITFLIP:
++	BIT	5, A
++	RET	Z
++	SET	6, A
++	RES	5, A
++	RET
++#ENDIF
++
+ #ENDIF
+ #IF (MEMMGR == MM_N8)
+ 	BIT	7,A			; TEST BIT 7 FOR RAM VS. ROM
+@@ -886,7 +904,11 @@ HB_START:
+ 	INC	A
+ 	OUT	(MPGSEL_1),A
+ #ENDIF
++#IFDEF DINOTRONHACK
++	LD	A,$5E ; 62
++#ELSE
+ 	LD	A,62
++#ENDIF
+ 	OUT	(MPGSEL_2),A
+ 	INC	A
+ 	OUT	(MPGSEL_3),A
