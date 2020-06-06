@@ -1,10 +1,9 @@
 
-ASSFLAGS=-v -b
-ASSEMBLER=z80asm $(ASSFLAGS)
+UZ80AS=uz80as -x
+ASSEMBLER=$(UZ80AS)
 
 %.com: %.asm
-	@$(ASSEMBLER) -l -o$@ $<
-	@rm -f driverfn.o
+	@$(ASSEMBLER) $< $@ ;
 
 .PHONY: all
 

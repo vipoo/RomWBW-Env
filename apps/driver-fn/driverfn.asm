@@ -1,15 +1,15 @@
-RESTART	EQU	$0000		; CP/M RESTART VECTOR
-BDOS	EQU	$0005		; BDOS INVOCATION VECTOR
+RESTART	.EQU	$0000		; CP/M RESTART VECTOR
+BDOS	.EQU	$0005		; BDOS INVOCATION VECTOR
 
-SYSGET	EQU	$F8
+SYSGET	.EQU	$F8
 
-SYSSETCPY	EQU	$F4
-SYSBNKCPY	EQU	$F5
+SYSSETCPY	.EQU	$F4
+SYSBNKCPY	.EQU	$F5
 
-HCB_BIDUSR	EQU	$8E		; USER BANK (TPA)
-HCB_BIDBIOS	EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
+HCB_BIDUSR	.EQU	$8E		; USER BANK (TPA)
+HCB_BIDBIOS	.EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
 
-	ORG	100H
+	.ORG	$100
 
 	LD	HL, (6)
 	LD	SP, HL
@@ -31,15 +31,15 @@ HCB_BIDBIOS	EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
 
 	PUSH	AF
 	CALL	PRTSTRD
-	DEFM	"Ret A: 0x$"
+	.DB	"Ret A: 0x$"
 	POP	AF
 	CALL	PRTHEX
 
 	CALL	PRTSTRD
-	DEFM	"\r\nRet HL: 0x$"
+	.DB	"\r\nRet HL: 0x$"
 	CALL	PRTHEX_HL
 	CALL	PRTSTRD
-	DEFM	"\r\nRet DE: 0x$"
+	.DB	"\r\nRet DE: 0x$"
 	CALL	PRTHEX_DE
 	CALL	CRLF			; formatting
 
@@ -56,7 +56,7 @@ HCB_BIDBIOS	EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
 
 	PUSH	AF
 	CALL	PRTSTRD
-	DEFM	"SYSSETCPY A: 0x$"
+	.DB	"SYSSETCPY A: 0x$"
 	POP	AF
 	CALL	PRTHEX
 	CALL	CRLF			; formatting
@@ -69,7 +69,7 @@ HCB_BIDBIOS	EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
 
 	PUSH	AF
 	CALL	PRTSTRD
-	DEFM	"SYSBNKCPY A: 0x$"
+	.DB	"SYSBNKCPY A: 0x$"
 	POP	AF
 	CALL	PRTHEX
 
@@ -77,7 +77,7 @@ HCB_BIDBIOS	EQU	$8D		; BIOS BANK (HBIOS, UBIOS)
 	CALL	CRLF			; formatting
 
 	CALL	PRTSTRD
-	DEFM	"DRIVER DATA: $"
+	.DB	"DRIVER DATA: $"
 
 	LD	A, (DATALENGTH)
 	LD	B, A
@@ -88,7 +88,7 @@ LOOP:
 	CALL	PRTHEX
 
 	CALL	PRTSTRD
-	DEFM	" $"
+	.DB	" $"
 
 	INC	HL
 	DJNZ	LOOP
@@ -99,29 +99,29 @@ EXIT:
 	JP	RESTART		; return to CP/M
 
 HELLO:
-	DEFM	"DRIVER FN TEST\r\n$"
+	.DB	"DRIVER FN TEST\r\n$"
 MSGUSE:
-	DEFM	"DRIVERFN SS UU LL\r\n"
-	DEFM	"  SS - Subfunction code (01, 11, 41 or 51)\r\n"
-	DEFM	"  UU - Unit number of driver\r\n"
-	DEFM	"  LL - expected size of data set\r\n"
-	DEFM	"$"
+	.DB	"DRIVERFN SS UU LL\r\n"
+	.DB	"  SS - Subfunction code (01, 11, 41 or 51)\r\n"
+	.DB	"  UU - Unit number of driver\r\n"
+	.DB	"  LL - expected size of data set\r\n"
+	.DB	"$"
 
 MSGPRM:
-	DEFM	"Parameter error$"
+	.DB	"Parameter error$"
 
 DRVDATA:
-	DEFW	0
+	.DW	0
 
 SUBFNCODE:
-	DEFB	0
+	.DB	0
 UNITNUMBER:
-	DEFB	0
+	.DB	0
 DATALENGTH:
-	DEFB	0
+	.DB	0
 
 STORE:
-	DEFS	200, 0
+	.FILL	200, 0
 ;===============================================================================
 ; PARSE COMMAND LINE
 ; IF PARSE ERROR, WRITES ERROR STRING AND THEN JP TO EXIT
@@ -259,7 +259,7 @@ PRTSTRZ:
 
 PRTHEX_DE:
 	PUSH	HL
-	LD	HL, DE
+	EX	DE, HL
 	CALL	PRTHEX_HL
 	POP	HL
 	RET
@@ -323,3 +323,5 @@ CRLF:
 
 DATA:
 	NOP
+
+	.END
