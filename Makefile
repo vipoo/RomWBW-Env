@@ -5,14 +5,13 @@
 .PHONY: romwbw-rcz80-test
 .PHONY: tools
 .PHONY: apps
-.PHONY: apps/hbios
 .PHONY: rcz80-rom-dino
 .PHONY: rcz80-rom-test
 .PHONY: romwbw
 
-all: apps/hbios Tools Tune.com rcz80-dino-romwbw
+all: apps Tools Tune.com rcz80-dino-romwbw
 
-test-build: apps/hbios Tools Tune.com rcz80-test-romwbw
+test-build: apps Tools Tune.com rcz80-test-romwbw
 
 export SHELL:=/bin/bash
 export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
@@ -54,9 +53,6 @@ rcz80-rom-dino: Tune.com		# use windows cmd line to build dino image
 
 rcz80-rom-test: Tune.com		# use windows cmd line to build test image
 	@./romwbw-build-cmd rom RCZ80 test
-
-apps/hbios:
-	$(MAKE) --directory apps/hbios
 
 apps:
 	$(MAKE) --directory apps
