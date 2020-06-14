@@ -14,19 +14,42 @@ F_READ		EQU	20
 	LD	HL, HELLO
 	CALL	PRTSTRZ
 
-	LD	DE, FCB			; LOAD FILE INTO DATA
-	LD	HL, DATA
-	CALL	LOADFILE
-	OR	A
-	JP	NZ, RESTART		; Handle file error
 
-	LD	HL, DATA		; PRINT CONTENT OF DATA
+keeptrying:
+	ld	b, 2
+	ld	c, 0
+	rst	08
+	or	a
+	jr	z, keeptrying
+
+
+;	Use hbios to get next char?
+	LD	B, 0
+	LD	c, 0
+	RST	08
+	LD	HL, HELLO
+	ld	(hl), e
 	CALL	PRTSTRZ
+
+
+
+
+	; LD	HL, FCB
+	; CALL	PRTSTRZ
+
+	; LD	DE, FCB			; LOAD FILE INTO DATA
+	; LD	HL, DATA
+	; CALL	LOADFILE
+	; OR	A
+	; JP	NZ, RESTART		; Handle file error
+
+	; LD	HL, DATA		; PRINT CONTENT OF DATA
+	; CALL	PRTSTRZ
 
 	JP	RESTART
 
 HELLO:
-	DEFM	"HELLO WORLD\r\n$"
+	DEFM	"HELLO WORLD....\r\n$"
 
 ; LOAD FILE
 ; NAME AT DE

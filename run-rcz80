@@ -2,4 +2,4 @@
 
 CONFIG=$1
 
- ./RC2014/rc2014 -b -s -r ./RomWBW/Binary/RCZ80_$1.rom
+ rc2014 -b -s -r ./RomWBW/Binary/RCZ80_$1.rom

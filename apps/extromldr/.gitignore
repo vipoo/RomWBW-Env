@@ -1,0 +1,14 @@
+*.o
+*.bin
+hello.com
+zcc_opt.def
+hello.err
+*.lis
+*.ihx
+*.map
+*.rom
+*._asm
+
+
+extromldr.asm
+extromldr.img

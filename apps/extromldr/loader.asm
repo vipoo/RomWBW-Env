@@ -1,0 +1,86 @@
+
+
+include "std.inc"
+
+MPGSEL_0	EQU	$78		; Z2 MEM MGR BANK 0 PAGE SELECT REG (WRITE ONLY)
+MPGSEL_1	EQU	$79		; Z2 MEM MGR BANK 1 PAGE SELECT REG (WRITE ONLY)
+MPGSEL_2	EQU	$7A		; Z2 MEM MGR BANK 2 PAGE SELECT REG (WRITE ONLY)
+MPGSEL_3	EQU	$7B		; Z2 MEM MGR BANK 3 PAGE SELECT REG (WRITE ONLY)
+
+TMS_CMDREG	EQU	$BF		; READ STATUS / WRITE REG SEL
+TMSCTRL1:       EQU	1		; CONTROL BITS
+
+
+RA_BNK	EQU	BID_IMG0
+RA_SIZE	EQU	CPM_SIZ
+RA_DEST	EQU	CPM_LOC
+RA_SRC	EQU	$5000
+RA_ENT	EQU	CPM_ENT
+
+	PUBLIC	_startGame, _startCpm, _selectTms, _fastClock
+	SECTION CODE
+
+_fastClock:
+	LD	A, 255			; UP CLOCK TO 7.3728
+	OUT	(7), A
+	RET
+
+; void startGame(byte firstBankId, byte secondBankId);
+
+_startGame:
+	LD	HL, 2
+	ADD	HL, SP
+  	; LD 	C, (HL)		; DRIVER INDEX
+	; INC	HL
+	; LD	E, (HL)		; MODE
+
+	LD	A, BID_ROMEX0 * 2	; TIMES 2 - GET 16K PAGE INSTEAD OF 32K
+	OUT	(MPGSEL_0),A		; BANK_0: 0K - 16K
+
+	LD	A, (hl) ;BID_ROMEX1 * 2	; TIMES 2 - GET 16K PAGE INSTEAD OF 32K
+	OUT	(MPGSEL_2),A		; BANK_2: 32K - 48K
+	INC	A			;
+	OUT	(MPGSEL_3),A		; BANK_3: 48K - 64K
+
+
+	; ENSURE TMS IS NOT RAISING INTERRUPTS
+	; SO WHEN NMI IS SELECTED NO INTERRUPTS WILL BE RAISED
+	; UNTIL BIOS IS LOADED
+	LD	A, $50			; DISABLE INT BIT
+	OUT	(TMS_CMDREG), A		; WRITE IT
+	EX	(SP), HL		; WAIT A BIT FOR TMS
+	EX	(SP), HL
+	LD	A, $81			; SELECT REGISTER 1 OF TMS
+	OUT	(TMS_CMDREG), A		; SELECT THE DESIRED REGISTER
+
+	DI
+
+	LD	A, 0			; DROP CLOCK TO 3.6864
+	OUT	(7), A
+
+	LD	A, $FF
+	OUT	(14), A			; SWITCH TO NMI
+
+	JP	0
+
+_selectTms:
+	LD	A, $FF
+	OUT	(15), A			; SELECT TMS OUTPUT
+	RET
+
+_startCpm:
+	; Copy image to it's running location
+	ld	e,RA_BNK		; source bank to E
+	ld	d,BID_USR		; dest is user bank
+	ld	hl,RA_SIZE		; HL := image size
+	ld	b,BF_SYSSETCPY		; HBIOS func: setup bank copy
+	rst	08			; do it
+
+	ld	de,RA_DEST		; DE := run dest adr
+	ld	hl,RA_SRC		; HL := image source adr
+	ld	b,BF_SYSBNKCPY		; HBIOS func: bank copy
+	rst	08			; do it
+
+	jp	RA_ENT
+
+	SECTION IGNORE

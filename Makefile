@@ -47,6 +47,12 @@ rcz80-test-romwbw:
 	trap cleanup EXIT
 	$(MAKE) --directory RomWBW
 
+chip8:
+	@./romwbw-build-cmd rom RCZ80 dino ../chip8/bin/chip8.com
+
+runchip8:
+	@rc2014 -b -f -s -r ./RomWBW/Binary/RCZ80_dino.rom
+
 
 rcz80-rom-dino: Tune.com		# use windows cmd line to build dino image
 	@./romwbw-build-cmd rom RCZ80 dino

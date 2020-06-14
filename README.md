@@ -55,3 +55,7 @@ Invokes the RC2014 emulator for the binary rom image RomWBW/Binary/RCZ80_dino.ro
 * `./run-rcz80-test`
 
 Invokes the RC2014 emulator for the binary rom image RomWBW/Binary/RCZ80_test.rom
+
+## Flashing onto a new ROM
+
+`flash  --port COM3 write -f ./RomWBW/Binary/RCZ80_dino.rom --verify`

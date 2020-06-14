@@ -1,0 +1,48 @@
+diff --git a/Source/HBIOS/Build.ps1 b/Source/HBIOS/Build.ps1
+index 755dea9..1c89cd3 100644
+--- a/Source/HBIOS/Build.ps1
++++ b/Source/HBIOS/Build.ps1
+@@ -188,12 +188,13 @@ if ($Platform -ne "UNA")
+ Concat 'romldr.bin', 'eastaegg.bin','dbgmon.bin', "..\cpm22\cpm_${Bios}.bin", "..\zsdos\zsys_${Bios}.bin" osimg.bin
+ 
+ # Build 20K OS chunk containing the loader, debug monitor, and one OS image
+-Concat 'romldr.bin', 'eastaegg.bin','dbgmon.bin', "..\zsdos\zsys_${Bios}.bin" osimg_small.bin
++Concat 'romldr.bin', 'eastaegg.bin','dbgmon.bin', "extromldr.img" osimg_small.bin
++#"..\zsdos\zsys_${Bios}.bin" osimg_small.bin
+ 
+ # Build second 32K chunk containing supplemental ROM apps (not for UNA)
+ if ($Platform -ne "UNA")
+ {
+-	Concat '..\Forth\camel80.bin', 'nascom.bin', 'tastybasic.bin', 'game.bin', 'imgpad0.bin', 'usrrom.bin' osimg1.bin
++	Concat '..\Forth\camel80.bin', 'nascom.bin', 'tastybasic.bin', 'game.bin', 'imgpad0.bin', 'extromldr.img' osimg1.bin
+ }
+ 
+ #
+diff --git a/Source/HBIOS/romldr.asm b/Source/HBIOS/romldr.asm
+index aa8455b..9e88f6d 100644
+--- a/Source/HBIOS/romldr.asm
++++ b/Source/HBIOS/romldr.asm
+@@ -2006,7 +2006,9 @@ ra_tbl_app:
+ ;      Name	  Key	   Dsky	  Bank	    Src	   Dest	    Size     Entry
+ ;      ---------  -------  -----  --------  -----  -------  -------  ----------
+ ra_ent(str_mon,	  'M',	   KY_CL, bid_cur,  $1000, MON_LOC, MON_SIZ, MON_SERIAL)
+-ra_ent(str_zsys,  'Z',	   KY_FW, bid_cur,  $2000, CPM_LOC, CPM_SIZ, CPM_ENT)
++;ra_ent(str_zsys,  'Z',	   KY_FW, bid_cur,  $2000, CPM_LOC, CPM_SIZ, CPM_ENT)
++ra_ent(str_user,  'U',	   $FF,	  bid_cur,  $2000, USR_LOC, USR_SIZ, USR_LOC)
++
+ #if (DSKYENABLE)
+ ra_ent(str_dsky,  'Y'+$80, KY_GO, bid_cur,  $1000, MON_LOC, MON_SIZ, MON_DSKY)
+ #endif
+diff --git a/Source/HBIOS/std.asm b/Source/HBIOS/std.asm
+index 3e5f073..be40f90 100644
+--- a/Source/HBIOS/std.asm
++++ b/Source/HBIOS/std.asm
+@@ -485,7 +485,7 @@ GAM_LOC		.EQU	$0200			; GAME 2048
+ GAM_SIZ		.EQU	$0900
+ GAM_END		.EQU	GAM_LOC + GAM_SIZ
+ 
+-USR_LOC		.EQU	$0200			; USER
++USR_LOC		.EQU	$4100			; USER
+ USR_SIZ		.EQU	$1000
+ USR_END		.EQU	USR_LOC + USR_SIZ
+ 

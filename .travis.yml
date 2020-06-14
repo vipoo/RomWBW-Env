@@ -10,14 +10,17 @@ git:
   depth: 3
 
 before_install:
-  - sudo apt-get update && sudo apt-get -y install texi2html texinfo help2man
+  - sudo apt-get update && sudo apt-get -y install texi2html texinfo help2man unzip
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
 
 install:
-  - wget https://github.com/vipoo/cpm/releases/download/v0.0.6/cpm-v0.0.6.tar.gz
+  - wget https://github.com/vipoo/z88dk/releases/download/v3.0.0-dino.1/z88dk-v3.0.0-dino.1.tar.gz
+  - mkdir -p z88dk
+  - tar -xzf z88dk-v3.0.0-dino.1.tar.gz -C ./z88dk/
+  - wget https://github.com/vipoo/cpm/releases/download/v0.0.7/cpm-v0.0.7.tar.gz
   - mkdir -p cpm
-  - tar -xzvf cpm-v0.0.6.tar.gz -C ./cpm
+  - tar -xzvf cpm-v0.0.7.tar.gz -C ./cpm
   - wget https://github.com/vipoo/RC2014/releases/download/v0.0.2/rc2014-v0.0.2.tar.gz
   - mkdir -p rc2014
   - tar -xzvf rc2014-v0.0.2.tar.gz -C ./rc2014
@@ -31,6 +34,8 @@ jobs:
         - export PATH=`pwd`/rc2014/bin:$PATH
         - export PATH=`pwd`/cpm/bin:$PATH
         - export PATH=`pwd`/uz80as/bin:$PATH
+        - export PATH=`pwd`/z88dk/bin:$PATH
+        - export ZCCCFG=`pwd`/z88dk/lib/config
         - ./version-stamp.sh
         - ROM_PLATFORM=RCZ80 ROM_CONFIG=test make test-build
       script:
@@ -41,6 +46,8 @@ jobs:
         - export PATH=`pwd`/rc2014/bin:$PATH
         - export PATH=`pwd`/cpm/bin:$PATH
         - export PATH=`pwd`/uz80as/bin:$PATH
+        - export PATH=`pwd`/z88dk/bin:$PATH
+        - export ZCCCFG=`pwd`/z88dk/lib/config
       script:
         - ./version-stamp.sh
         - make romwbw

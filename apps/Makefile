@@ -4,7 +4,7 @@
 .PHONY: driver-fn
 .PHONY: extromldr
 
-all: hbios inttest driver-fn extromldr
+all: hbios inttest driver-fn extromldr hello
 
 extromldr:
 	$(MAKE) --directory extromldr
@@ -17,3 +17,6 @@ hbios:
 
 inttest:
 	$(MAKE) --directory inttest
+
+hello:
+	$(MAKE) --directory hello-world-cpm
