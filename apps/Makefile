@@ -2,8 +2,12 @@
 .PHONY: hbios
 .PHONY: inttest
 .PHONY: driver-fn
+.PHONY: extromldr
 
-all: hbios inttest driver-fn
+all: hbios inttest driver-fn extromldr
+
+extromldr:
+	$(MAKE) --directory extromldr
 
 driver-fn:
 	$(MAKE) --directory driver-fn
