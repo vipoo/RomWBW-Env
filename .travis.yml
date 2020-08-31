@@ -10,7 +10,7 @@ git:
   depth: 3
 
 before_install:
-  - sudo apt-get update && sudo apt-get -y install texi2html texinfo help2man unzip
+  - sudo apt-get update && sudo apt-get -y install texi2html texinfo help2man
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
 
@@ -39,7 +39,7 @@ jobs:
         - ./version-stamp.sh
         - ROM_PLATFORM=RCZ80 ROM_CONFIG=test make test-build
       script:
-        - ./test-cpm-hbios-all
+        - ./test-rc-hbios sndnote
         - ./test-rc-hbios-all
     - stage: All Rom Images
       before_script:
