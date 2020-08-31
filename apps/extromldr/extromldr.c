@@ -129,13 +129,13 @@ void main() {
   static char f = 0;
 
   if (!isRomInserted()) {
-    // hbCioOutString("\r\nNo ROM Found\r\n");
+    hbCioOutString("\r\nNo ROM Found\r\n");
     startCpm();
     return;
   }
 
   selectTms();
-  // hbCioOutString("\r\nFound ROM\r\n");
+  hbCioOutString("\r\nFound ROM\r\n");
 
   loadGameList();
 
