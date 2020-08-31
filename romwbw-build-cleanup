@@ -16,7 +16,7 @@ cp ./store/MBASIC.COM ./RomWBW/Source/RomDsk/ROM_512KB/
 cp ./store/FDISK80.COM ./RomWBW/Source/RomDsk/ROM_512KB/
 cp ./store/ZDE.COM ./RomWBW/Source/RomDsk/ROM_512KB/
 
-patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < 0001-romldr.patch
+patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < 0001-quite-boot.patch
 patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < 0001-apply-custom-usrrom-image.patch
 # patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < 0001-dinotron-hack.patch
 patch -suN --no-backup-if-mismatch -R -p1 -d ./RomWBW < 0001-force-enable-tms.patch
