@@ -48,7 +48,7 @@ This bash script will from WSL invoke the RomWBW build cmd windows cli scripts
 example: `./romwbw-build-cmd shared` will run the BuildShared.cmd script
 
 
-* `./run-rcz80-dino`
+* `rc2014 -b -f -s -r ./RomWBW/Binary/RCZ80_dino.rom`
 
 Invokes the RC2014 emulator for the binary rom image RomWBW/Binary/RCZ80_dino.rom
 
