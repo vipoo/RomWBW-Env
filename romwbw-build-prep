@@ -32,5 +32,5 @@ patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-AY38910-force-enable.p
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-tms-user-config.patch
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-force-enable-tms.patch
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-apply-custom-usrrom-image.patch
-patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-romldr.patch
 patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-redo-dd-fix-not-accepted-in-upstream.patch
+patch -suN --no-backup-if-mismatch -p1 -d ./RomWBW < 0001-quite-boot.patch
